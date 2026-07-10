@@ -1,0 +1,11 @@
+{
+  "name": "site-demo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --import tsx ./src/server.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.0"
+  }
+}

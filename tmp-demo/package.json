@@ -1,0 +1,8 @@
+{
+  "name": "yawn-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "yh dev"
+  }
+}

@@ -1,0 +1,5 @@
+<section class="test">
+  <h2>{{title}}</h2>
+  <p>{{subtitle}}</p>
+  <a href="{{href}}">{{cta}}</a>
+</section>

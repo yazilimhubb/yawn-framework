@@ -1,0 +1,6 @@
+<main>
+  <Hero title="Yawn ⚡ ile hızlıca site kur" subtitle="Yawn framework ile modern, sade ve hızlı web sayfaları oluştur." href="/start" cta="Başla" />
+  <con:Test title="Inserted" subtitle="ok" />
+  <con:Hero title="Hi" cta="Go" />
+  <con:Hero title="Hi" cta="Go" />
+</main>
