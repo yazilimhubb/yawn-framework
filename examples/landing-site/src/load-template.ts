@@ -1,60 +1,39 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { compileYawnTemplate } from '../../../packages/core/src/index.js';
+import { compile, compileToFragment } from '../../../packages/compiler/src/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-function escapeHtml(s: string) {
-  return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
-function renderNode(node: any, baseDir: string): string {
-  if (typeof node === 'string') return escapeHtml(node);
-  const tag = node.tag;
-  const attrs = node.attrs ?? {};
-
-  // Component resolution: support `Tag` (PascalCase) and `con:Tag` shorthand
-  let compName: string | null = null;
-  if (tag.startsWith('con:')) {
-    compName = tag.split(':')[1];
-  } else if (/^[A-Z]/.test(tag)) {
-    compName = tag;
-  }
-
-  if (compName) {
-    const tryPaths = [join(baseDir, `${compName}.yawn`), join(baseDir, 'components', `${compName}.yawn`)];
-    for (const compPath of tryPaths) {
-      if (existsSync(compPath)) {
-        const src = readFileSync(compPath, 'utf8');
-        let compHtml = renderTemplateToHtml(src, baseDir);
-        // simple interpolation of {{prop}}
-        for (const [k, v] of Object.entries(attrs)) {
-          compHtml = compHtml.split(`{{${k}}}`).join(String(v));
-        }
-        return compHtml;
-      }
+/**
+ * Resolves a component name to its .yawn source.
+ * Looks in the same dir as the calling file, then in components/.
+ */
+function makeResolver(baseDir: string) {
+  return (name: string): string | null => {
+    const tryPaths = [
+      join(baseDir, `${name}.yawn`),
+      join(baseDir, 'components', `${name}.yawn`),
+    ];
+    for (const p of tryPaths) {
+      if (existsSync(p)) return readFileSync(p, 'utf8');
     }
-  }
-
-  const attrText = Object.entries(attrs).map(([k, v]) => ` ${k}="${escapeHtml(v)}"`).join('');
-  const childHtml = (node.children ?? []).map((c: any) => renderNode(c, baseDir)).join('');
-  return `<${tag}${attrText}>${childHtml}</${tag}>`;
+    return null;
+  };
 }
 
-function renderTemplateToHtml(source: string, baseDir: string) {
-  const compiled = compileYawnTemplate(source);
-  return renderNode(compiled, baseDir);
-}
+/**
+ * Loads a .yawn template file and renders it to an HTML fragment string.
+ * Component references are resolved relative to the template's directory.
+ */
+export function loadTemplate(fileName: string, props: Record<string, string> = {}): string {
+  const fullPath = join(__dirname, fileName);
+  const source = readFileSync(fullPath, 'utf8');
+  const baseDir = dirname(fullPath);
 
-export function loadTemplate(fileName: string): string {
-  const full = join(__dirname, fileName);
-  const source = readFileSync(full, 'utf8');
-  return renderTemplateToHtml(source, __dirname);
+  return compileToFragment(source, {
+    props,
+    resolveComponent: makeResolver(baseDir),
+  });
 }

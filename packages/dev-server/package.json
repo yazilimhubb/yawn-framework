@@ -1,10 +1,23 @@
 {
-  "name": "@yh/dev-server",
+  "name": "@yawn/dev-server",
   "version": "0.1.0",
+  "description": "Development server with hot reload (SSE) for Yawn framework",
+  "license": "MIT",
+  "author": "anythingQW (https://github.com/anythingQW)",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
-    ".": "./src/index.ts"
-  }
+    ".": {
+      "import": "./src/index.ts",
+      "types": "./src/index.ts"
+    }
+  },
+  "keywords": ["yawn", "dev-server", "hmr", "hot-reload"],
+  "engines": { "node": ">=18" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yazilimhubb/yawn-framework"
+  },
+  "files": ["src", "README.md"]
 }

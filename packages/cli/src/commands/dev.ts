@@ -1,26 +1,47 @@
 import { existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
+import { spawnSync } from 'node:child_process';
 
 export function runDev(targetDir = '.') {
-  const entry = join(targetDir, 'src', 'main.ts');
-  const fallback = join(targetDir, 'src', 'main.js');
+  const abs = resolve(targetDir);
+  const entry = join(abs, 'src', 'server.ts') || join(abs, 'src', 'main.ts');
+  const fallback = join(abs, 'src', 'server.js') || join(abs, 'src', 'main.js');
 
-  if (existsSync(entry)) {
+  let entryFile: string | null = null;
+  for (const f of [
+    join(abs, 'src', 'server.ts'),
+    join(abs, 'src', 'main.ts'),
+    join(abs, 'src', 'server.js'),
+    join(abs, 'src', 'main.js'),
+  ]) {
+    if (existsSync(f)) {
+      entryFile = f;
+      break;
+    }
+  }
+
+  if (!entryFile) {
     return {
-      exitCode: 0,
-      output: `Starting dev server for ${targetDir} using ${entry}`,
+      exitCode: 1,
+      output: `No entry file found in ${abs}/src.\nCreate src/server.ts or src/main.ts to get started.`,
     };
   }
 
-  if (existsSync(fallback)) {
-    return {
-      exitCode: 0,
-      output: `Starting dev server for ${targetDir} using ${fallback}`,
-    };
-  }
+  console.log(`\n  🟢 Starting dev server → ${entryFile}\n`);
+
+  // spawn tsx so TypeScript files run directly
+  const res = spawnSync(
+    process.execPath,
+    ['--import', 'tsx', entryFile],
+    {
+      stdio: 'inherit',
+      cwd: abs,
+      env: { ...process.env, NODE_ENV: 'development' },
+    },
+  );
 
   return {
-    exitCode: 0,
-    output: `No app entry found in ${targetDir}; ready to start a new Yawn app`,
+    exitCode: res.status ?? 0,
+    output: '',
   };
 }

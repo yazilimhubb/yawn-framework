@@ -8,15 +8,17 @@ export interface AppContext {
 export function createAppContext(): AppContext {
   const modules: AppModule[] = [];
 
-  return {
+  const ctx: AppContext = {
     modules,
     use(module: AppModule) {
       modules.push(module);
-      module.setup({ use: (nextModule) => this.use(nextModule) });
+      module.setup?.({ use: (nextModule) => ctx.use(nextModule) });
     },
   };
+
+  return ctx;
 }
 
-export function registerGlobalModule(module: AppModule) {
+export function registerGlobalModule(module: AppModule): AppModule {
   return defineModule(module);
 }

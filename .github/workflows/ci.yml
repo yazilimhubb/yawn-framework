@@ -2,22 +2,26 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js
+
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Install
-        run: pnpm install --frozen-lockfile
-      - name: Typecheck
-        run: pnpm -w run build --if-present || true
-      - name: Pack dry-run
-        run: npm pack --dry-run
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Typecheck core
+        run: npx tsc --noEmit --strict --moduleResolution bundler --module esnext --target esnext --skipLibCheck packages/core/src/index.ts
+
+      - name: Typecheck reactivity
+        run: npx tsc --noEmit --strict --moduleResolution bundler --module esnext --target esnext --skipLibCheck packages/reactivity/src/signal.ts

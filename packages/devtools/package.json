@@ -1,9 +1,25 @@
 {
-  "name": "@yh-framework/devtools",
-  "version": "0.0.0",
+  "name": "@yawn/devtools",
+  "version": "0.1.0",
+  "description": "Dev-only inspection and debugging utilities for Yawn framework",
+  "license": "MIT",
+  "author": "anythingQW (https://github.com/anythingQW)",
   "type": "module",
   "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "exports": {
-    ".": "./src/index.ts"
-  }
+    ".": {
+      "import": "./src/index.ts",
+      "types": "./src/index.ts"
+    }
+  },
+  "keywords": ["yawn", "devtools", "debug"],
+  "peerDependencies": {
+    "@yawn/reactivity": ">=0.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yazilimhubb/yawn-framework"
+  },
+  "files": ["src", "README.md"]
 }

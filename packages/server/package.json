@@ -1,10 +1,23 @@
 {
-  "name": "@yh/server",
+  "name": "@yawn/server",
   "version": "0.1.0",
+  "description": "Production Node.js HTTP server with static file serving for Yawn framework",
+  "license": "MIT",
+  "author": "anythingQW (https://github.com/anythingQW)",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
-    ".": "./src/index.ts"
-  }
+    ".": {
+      "import": "./src/index.ts",
+      "types": "./src/index.ts"
+    }
+  },
+  "keywords": ["yawn", "server", "http", "ssr", "node"],
+  "engines": { "node": ">=18" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yazilimhubb/yawn-framework"
+  },
+  "files": ["src", "README.md"]
 }

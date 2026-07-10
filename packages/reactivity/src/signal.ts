@@ -1,12 +1,15 @@
-type Subscriber = () => void;
+import { getActiveSubscriber, setActiveSubscriber } from './effect.js';
+
+export type Subscriber = () => void;
 
 export interface Signal<T> {
+  /** Read the current value. Automatically tracked inside an effect. */
   get(): T;
+  /** Set a new value and notify all subscribers. */
   set(value: T): void;
+  /** Manually subscribe to changes. Returns an unsubscribe function. */
   subscribe(listener: Subscriber): () => void;
 }
-
-let activeSubscriber: Subscriber | null = null;
 
 export function signal<T>(initialValue: T): Signal<T> {
   let value = initialValue;
@@ -14,14 +17,16 @@ export function signal<T>(initialValue: T): Signal<T> {
 
   return {
     get() {
-      if (activeSubscriber) {
-        subscribers.add(activeSubscriber);
+      const active = getActiveSubscriber();
+      if (active) {
+        subscribers.add(active);
       }
       return value;
     },
     set(nextValue: T) {
+      if (Object.is(value, nextValue)) return; // skip if same reference
       value = nextValue;
-      for (const subscriber of subscribers) {
+      for (const subscriber of [...subscribers]) {
         subscriber();
       }
     },
@@ -32,38 +37,59 @@ export function signal<T>(initialValue: T): Signal<T> {
   };
 }
 
+/**
+ * Creates a derived signal that re-computes when any of its dependencies change.
+ *
+ * @example
+ * const a = signal(2);
+ * const b = signal(3);
+ * const sum = computed(() => a.get() + b.get());
+ * console.log(sum.get()); // 5
+ */
 export function computed<T>(fn: () => T): Signal<T> {
-  const state = signal<T | undefined>(undefined as T);
-  let isComputing = false;
+  let cachedValue: T;
+  let dirty = true;
+  const subscribers = new Set<Subscriber>();
 
-  const recompute = () => {
-    if (isComputing) {
-      return;
-    }
-
-    isComputing = true;
-    try {
-      const previousSubscriber = activeSubscriber;
-      activeSubscriber = recompute;
-      const nextValue = fn();
-      state.set(nextValue);
-      activeSubscriber = previousSubscriber;
-    } finally {
-      isComputing = false;
+  const recompute: Subscriber = () => {
+    dirty = true;
+    for (const sub of [...subscribers]) {
+      sub();
     }
   };
 
-  recompute();
-
   return {
     get() {
-      return state.get();
+      // track the computed as a dependency of the outer effect
+      const active = getActiveSubscriber();
+      if (active) {
+        subscribers.add(active);
+      }
+
+      if (dirty) {
+        const prev = getActiveSubscriber();
+        setActiveSubscriber(recompute);
+        try {
+          cachedValue = fn();
+        } finally {
+          setActiveSubscriber(prev);
+        }
+        dirty = false;
+      }
+
+      return cachedValue;
     },
     set(value: T) {
-      state.set(value);
+      // computed is normally read-only; allow override for testing
+      cachedValue = value;
+      dirty = false;
+      for (const sub of [...subscribers]) {
+        sub();
+      }
     },
     subscribe(listener: Subscriber) {
-      return state.subscribe(listener);
+      subscribers.add(listener);
+      return () => subscribers.delete(listener);
     },
   };
 }

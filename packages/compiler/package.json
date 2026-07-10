@@ -1,9 +1,22 @@
 {
-  "name": "@yh-framework/compiler",
-  "version": "0.0.0",
+  "name": "@yawn/compiler",
+  "version": "0.1.0",
+  "description": ".yawn template compiler — parses, transforms and serializes to HTML",
+  "license": "MIT",
+  "author": "anythingQW (https://github.com/anythingQW)",
   "type": "module",
   "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "exports": {
-    ".": "./src/index.ts"
-  }
+    ".": {
+      "import": "./src/index.ts",
+      "types": "./src/index.ts"
+    }
+  },
+  "keywords": ["yawn", "compiler", "template", "html", "parser"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yazilimhubb/yawn-framework"
+  },
+  "files": ["src", "README.md"]
 }
