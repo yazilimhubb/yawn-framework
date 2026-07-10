@@ -1,5 +1,5 @@
 {
-  "name": "@yawn/compiler",
+  "name": "@yawn-framework/compiler",
   "version": "0.1.0",
   "description": ".yawn template compiler — parses, transforms and serializes to HTML",
   "license": "MIT",

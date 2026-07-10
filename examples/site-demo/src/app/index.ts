@@ -1,28 +1,32 @@
-import { createApp, defineComponent } from '../../../../packages/core/src/index.js';
+import { createApp, defineComponent, renderWithModules } from '../../../../packages/core/src/index.js';
 import { createRouter, createRoute } from '../../../../packages/router/src/index.js';
-import { Layout } from './layout.js';
-import { Page } from './page.js';
+import { Layout } from '../components/Layout.js';
+import { HomePage } from '../pages/home.js';
+import { AboutPage } from '../pages/about.js';
+import { ContactPage } from '../pages/contact.js';
 
-const router = createRouter({
-  routes: [createRoute('/', Page)],
+export const router = createRouter({
+  routes: [
+    createRoute('/', HomePage),
+    createRoute('/about', AboutPage),
+    createRoute('/contact', ContactPage),
+  ],
 });
 
-export function startApp(container: HTMLElement | { innerHTML: string }) {
-  const app = createApp(
-    defineComponent({
-      setup() {
-        return () => ({
-          tag: 'div',
-          attrs: { id: 'app' },
-          children: [
-            Layout.setup(),
-            router.render(),
-          ],
-        });
-      },
-    }),
-  );
+const Root = defineComponent({
+  setup() {
+    return Layout.setup({ slot: router.render() });
+  },
+});
 
-  app.mount(container);
+export function createSiteApp() {
+  const app = createApp(Root);
   return app;
+}
+
+/** SSR: render the current route to a full HTML string */
+export function renderPage(path = '/'): string {
+  // update router path for SSR
+  (router as unknown as { currentPath: string }).currentPath = path;
+  return renderWithModules(Root);
 }

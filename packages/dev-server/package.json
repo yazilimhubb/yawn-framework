@@ -1,5 +1,5 @@
 {
-  "name": "@yawn/dev-server",
+  "name": "@yawn-framework/dev-server",
   "version": "0.1.0",
   "description": "Development server with hot reload (SSE) for Yawn framework",
   "license": "MIT",

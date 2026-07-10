@@ -1,98 +1,150 @@
-# Yawn Framework ⚡
+# ⚡ Yawn Framework
 
-A TypeScript-first, HTML-based web framework for building fast, simple web sites and apps.
+HTML-tabanlı, TypeScript destekli modern web framework. `.yawn` single-file componentleri ile template, script ve style tek dosyada. Tailwind dahil. Reactive state hazır. Sıfır config.
 
-- **`.yawn` templates** — HTML-like file format with component composition and `{{prop}}` interpolation
-- **Component model** — plain JavaScript objects, no magic, fully typed
-- **Reactivity** — signals, computed values, effects and watchers
-- **Router** — client-side routing with dynamic params and navigation guards
-- **SSR** — render to HTML string for server-side rendering
-- **CLI** — scaffold projects, create components, start dev server
+[![npm](https://img.shields.io/npm/v/yawn-framework)](https://www.npmjs.com/package/yawn-framework)
+[![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-## Packages
-
-| Package | npm | Description |
-|---|---|---|
-| [`yawn-framework`](packages/core) | core | Component model, renderer, app lifecycle |
-| [`@yawn/reactivity`](packages/reactivity) | reactivity | Signals, computed, effect, watch |
-| [`@yawn/router`](packages/router) | router | Client-side router |
-| [`@yawn/compiler`](packages/compiler) | compiler | `.yawn` template parser & compiler |
-| [`@yawn/server`](packages/server) | server | Production HTTP server |
-| [`@yawn/dev-server`](packages/dev-server) | dev-server | Dev server with hot reload |
-| [`@yawn/runtime`](packages/runtime) | runtime | Browser mount & hydration |
-| [`@yawn/shared`](packages/shared) | shared | Shared types & utilities |
-| [`@yawn/devtools`](packages/devtools) | devtools | Dev-only debug tools |
-| [`@yawn/cli`](packages/cli) | cli | CLI (`yh` command) |
-
-## Quick start
+## Hızlı Başlangıç
 
 ```bash
-npx yawn-framework init my-site
+npx create-yawn@latest my-site
 cd my-site
 npm install
-npm run dev
+yh dev
 ```
 
-## Example
+→ `http://localhost:3000`
 
-**`src/page.yawn`**
+---
+
+## .yawn Dosya Formatı
+
+Her şey tek dosyada — template, script, style:
+
 ```html
-<main>
-  <Hero title="Welcome to Yawn" subtitle="Build fast, simple sites." cta="Get started" href="/start" />
-</main>
+<!-- src/pages/index.yawn -->
+<template>
+  <div class="min-h-screen bg-slate-900 text-white flex items-center justify-center">
+    <div class="text-center">
+      <h1 class="text-5xl font-black mb-4">Merhaba {{ name }}!</h1>
+      <p class="text-white/60 mb-8">Sayaç: {{ count }}</p>
+
+      <div class="flex gap-3 justify-center">
+        <button @click="count--" class="bg-white/10 hover:bg-white/20 px-6 py-3 rounded-full font-bold transition">−</button>
+        <button @click="count++" class="bg-indigo-500 hover:bg-indigo-400 px-6 py-3 rounded-full font-bold transition">+</button>
+      </div>
+
+      <p :if="count > 9" class="mt-6 text-green-400 font-semibold">🎉 10'u geçtin!</p>
+    </div>
+  </div>
+</template>
+
+<script>
+  let name = "Yawn";
+  let count = 0;
+</script>
 ```
 
-**`src/components/Hero.yawn`**
-```html
-<section class="hero">
-  <h1>{{title}}</h1>
-  <p>{{subtitle}}</p>
-  <a href="{{href}}">{{cta}}</a>
-</section>
+### Direktifler
+
+| Direktif | Açıklama | Örnek |
+|---|---|---|
+| `{{ expr }}` | Reactive binding | `{{ count }}` |
+| `@click="expr"` | Event handler | `@click="count++"` |
+| `:if="expr"` | Conditional render | `:if="count > 0"` |
+| `:each="x in xs"` | Loop | `:each="item in items"` |
+
+---
+
+## Paketler
+
+| Paket | Açıklama |
+|---|---|
+| `yawn-framework` | Core — component model, renderer, app lifecycle |
+| `@yawn-framework/compiler` | `.yawn` template compiler + SFC parser |
+| `@yawn-framework/reactivity` | signal, computed, effect, watch |
+| `@yawn-framework/router` | Client-side router, dynamic params, navigation guards |
+| `@yawn-framework/server` | Production Node.js HTTP server |
+| `@yawn-framework/dev-server` | Dev server with hot reload (SSE) |
+| `@yawn-framework/runtime` | Browser mount & hydration |
+| `@yawn-framework/shared` | Shared types & utilities |
+| `@yawn-framework/devtools` | Dev-only debug tools |
+| `@yawn-framework/cli` | CLI (`yh` command) |
+
+---
+
+## CLI Komutları
+
+```bash
+yh init my-site              # Yeni proje oluştur
+yh dev                       # Dev server başlat (hot reload)
+yh build                     # Production build
+yh create component Hero     # .yawn component oluştur
+yh create site landing       # Landing site scaffoldu
+yh insert src/page.yawn Hero title="Hello"  # Component ekle
 ```
 
-**`src/server.ts`**
+---
+
+## TypeScript API
+
+Daha fazla kontrol isteyenler için:
+
 ```ts
-import { startDevServer } from '@yawn/dev-server';
-import { loadTemplate } from './load-template.js';
-
-startDevServer({
-  port: 3000,
-  handler: (path) => path === '/' ? loadTemplate('page.yawn') : null,
-});
-```
-
-**`src/main.ts`** (browser)
-```ts
-import { createApp, defineComponent } from 'yawn-framework';
-import { signal, effect } from '@yawn/reactivity';
+import { createApp, defineComponent, h, el } from 'yawn-framework';
+import { signal, computed, effect } from '@yawn-framework/reactivity';
+import { createRouter, createRoute } from '@yawn-framework/router';
 
 const count = signal(0);
+const doubled = computed(() => count.get() * 2);
 
 const App = defineComponent({
   setup() {
-    return () => ({
-      tag: 'div',
-      children: [
-        { tag: 'p', children: [`Count: ${count.get()}`] },
-        { tag: 'button', attrs: { type: 'button' }, children: ['Increment'] },
-      ],
-    });
+    return el('div', {},
+      el('p', {}, `Count: ${count.get()}, Doubled: ${doubled.get()}`),
+      el('button', { id: 'inc' }, '+'),
+    );
   },
 });
 
 const app = createApp(App);
 app.mount(document.body);
 
-effect(() => {
-  const btn = document.querySelector('button');
-  btn?.addEventListener('click', () => {
-    count.set(count.get() + 1);
-    app.mount(document.body);
-  });
+effect(() => { count.get(); app.update(); });
+document.addEventListener('click', e => {
+  if ((e.target as HTMLElement).id === 'inc') count.set(count.get() + 1);
 });
 ```
 
-## License
+---
 
-MIT
+## Proje Yapısı
+
+```
+my-site/
+├── src/
+│   ├── pages/
+│   │   ├── index.yawn      # → /
+│   │   └── about.yawn      # → /about
+│   ├── components/
+│   │   └── Hero.yawn
+│   └── server.ts
+├── public/
+│   └── style.css
+└── package.json
+```
+
+---
+
+## Bağlantılar
+
+- **npm:** [yawn-framework](https://www.npmjs.com/package/yawn-framework)
+- **GitHub:** [yazilimhubb/yawn-framework](https://github.com/yazilimhubb/yawn-framework)
+- **Organizasyon:** [@yawn-framework](https://www.npmjs.com/settings/yawn-framework/packages)
+
+---
+
+## Lisans
+
+MIT © [anythingQW](https://github.com/anythingQW)

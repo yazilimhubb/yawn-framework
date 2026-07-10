@@ -1,5 +1,5 @@
 {
-  "name": "@yawn/runtime",
+  "name": "@yawn-framework/runtime",
   "version": "0.1.0",
   "description": "Browser runtime and hydration for Yawn framework",
   "license": "MIT",

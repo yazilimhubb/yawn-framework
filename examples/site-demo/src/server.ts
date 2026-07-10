@@ -1,55 +1,68 @@
 import { createServer } from 'node:http';
-import { startApp } from './app/index.ts';
+import { existsSync, readFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { renderPage } from './app/index.js';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const port = Number(process.env.PORT ?? 3000);
 const host = process.env.HOST ?? '127.0.0.1';
 
-function listenWithFallback(port: number) {
-  const server = createServer((req, res) => {
-    if (req.url === '/' || req.url === '/index.html') {
-      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-      res.end(`<!doctype html>
-<html>
+function loadCss(): string {
+  const cssPath = join(__dirname, 'styles', 'main.css');
+  return existsSync(cssPath) ? readFileSync(cssPath, 'utf8') : '';
+}
+
+function buildHtml(body: string): string {
+  return `<!doctype html>
+<html lang="tr">
   <head>
     <meta charset="utf-8" />
-    <title>YH Framework Demo</title>
-    <style>
-      body { margin: 0; font-family: Inter, system-ui, sans-serif; background: #f8fafc; color: #0f172a; }
-      .page { max-width: 780px; margin: 3rem auto; padding: 2rem; border-radius: 20px; background: white; box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08); }
-      .pill { display: inline-block; padding: 0.35rem 0.7rem; border-radius: 999px; background: #dbeafe; color: #1d4ed8; font-weight: 700; }
-      h1 { margin-top: 0.5rem; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Yawn Framework Demo</title>
+    <style>${loadCss()}</style>
   </head>
   <body>
-    <main class="page">
-      <span class="pill">YH Framework</span>
-      <h1>Hello World</h1>
-      <p>Bu sayfa yerel sunucudan gelmektedir.</p>
-      <p>Framework çalışıyor.</p>
-    </main>
+    ${body}
   </body>
-</html>`);
+</html>`;
+}
+
+function listenWithFallback(tryPort: number): void {
+  const server = createServer((req, res) => {
+    const pathname = new URL(req.url ?? '/', `http://${host}:${tryPort}`).pathname;
+
+    if (pathname === '/favicon.ico') {
+      res.writeHead(204);
+      res.end();
       return;
     }
 
-    res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-    res.end('Not found');
+    try {
+      const body = renderPage(pathname);
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end(buildHtml(body));
+    } catch (err) {
+      res.writeHead(500, { 'Content-Type': 'text/plain' });
+      res.end(`Error: ${err instanceof Error ? err.message : String(err)}`);
+    }
   });
 
   server.on('error', (error: NodeJS.ErrnoException) => {
-    if (error.code === 'EADDRINUSE' && port < 3010) {
-      listenWithFallback(port + 1);
+    if (error.code === 'EADDRINUSE' && tryPort < 3010) {
+      listenWithFallback(tryPort + 1);
       return;
     }
-
     throw error;
   });
 
-  server.listen(port, host, () => {
-    console.log(`YH Framework demo running at http://${host}:${port}`);
+  server.listen(tryPort, host, () => {
+    console.log(`\n  ⚡ Yawn site-demo  →  http://${host}:${tryPort}\n`);
+    console.log('  Routes:');
+    console.log('    /          → Home');
+    console.log('    /about     → Hakkımızda');
+    console.log('    /contact   → İletişim\n');
   });
-
-  return server;
 }
 
 listenWithFallback(port);

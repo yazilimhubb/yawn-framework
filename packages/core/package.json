@@ -1,22 +1,36 @@
 {
   "name": "yawn-framework",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Core component model, renderer and template compiler for Yawn framework",
   "license": "MIT",
   "author": "anythingQW (https://github.com/anythingQW)",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
+  "bin": {
+    "yh": "./bin/yh.js",
+    "yawn": "./bin/yh.js"
+  },
   "exports": {
     ".": {
       "import": "./src/index.ts",
       "types": "./src/index.ts"
     }
   },
-  "keywords": ["yawn", "framework", "component", "ssr", "template"],
+  "keywords": [
+    "yawn",
+    "framework",
+    "component",
+    "ssr",
+    "template"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/yazilimhubb/yawn-framework"
   },
-  "files": ["src", "README.md"]
+  "files": [
+    "src",
+    "bin",
+    "README.md"
+  ]
 }

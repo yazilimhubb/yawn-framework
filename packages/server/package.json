@@ -1,5 +1,5 @@
 {
-  "name": "@yawn/server",
+  "name": "@yawn-framework/server",
   "version": "0.1.0",
   "description": "Production Node.js HTTP server with static file serving for Yawn framework",
   "license": "MIT",

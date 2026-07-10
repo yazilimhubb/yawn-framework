@@ -10,43 +10,31 @@ export function escapeHtml(value: string): string {
     .replace(/'/g, '&#39;');
 }
 
-function resolveRenderable(node: ComponentRenderResult): ComponentRenderResult {
-  return typeof node === 'function' ? node() : node;
-}
+const VOID_ELEMENTS = new Set([
+  'area','base','br','col','embed','hr','img','input','link','meta','param','source','track','wbr',
+]);
 
-function renderNode(node: ComponentRenderResult): string {
-  if (typeof node === 'string' || typeof node === 'number' || typeof node === 'boolean') {
-    return escapeHtml(String(node));
-  }
+export function renderNode(node: ComponentRenderResult): string {
+  if (node === null || node === undefined) return '';
+  if (typeof node === 'string') return escapeHtml(node);
+  if (typeof node === 'number' || typeof node === 'boolean') return escapeHtml(String(node));
 
-  if (node === null || node === undefined) {
-    return '';
-  }
+  const resolved = typeof node === 'function' ? node() : node;
+  if (!isComponentNode(resolved)) return renderNode(resolved);
 
-  const resolved = resolveRenderable(node);
+  const { tag, attrs = {}, children = [] } = resolved as ComponentNode;
+  const attrStr = Object.entries(attrs)
+    .filter(([, v]) => v !== false && v !== null && v !== undefined)
+    .map(([name, value]) => value === true ? ` ${name}` : ` ${name}="${escapeHtml(String(value))}"`)
+    .join('');
 
-  if (isComponentNode(resolved)) {
-    const parts: string[] = [];
-    const attrs = Object.entries(resolved.attrs ?? {}).map(([name, value]) => {
-      const safeValue = value == null ? '' : escapeHtml(String(value));
-      return ` ${name}="${safeValue}"`;
-    });
+  if (VOID_ELEMENTS.has(tag.toLowerCase())) return `<${tag}${attrStr} />`;
 
-    parts.push(`<${resolved.tag}${attrs.join('')}>`);
-
-    for (const child of resolved.children ?? []) {
-      parts.push(renderNode(child));
-    }
-
-    parts.push(`</${resolved.tag}>`);
-    return parts.join('');
-  }
-
-  return renderNode(resolved);
+  return `<${tag}${attrStr}>${children.map(renderNode).join('')}</${tag}>`;
 }
 
 export function renderToHtml(root: ComponentDefinition): string {
-  return renderNode(root.setup());
+  return renderNode(root.setup(root.props ?? {}));
 }
 
 export function renderToContainer(root: ComponentDefinition, container: Pick<HTMLElement, 'innerHTML'>): void {

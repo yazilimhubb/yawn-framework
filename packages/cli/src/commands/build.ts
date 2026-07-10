@@ -1,6 +1,7 @@
 import { existsSync, mkdirSync, writeFileSync, readdirSync, readFileSync } from 'node:fs';
-import { join, resolve, extname, relative, basename } from 'node:path';
+import { join, resolve, extname, relative, basename, dirname } from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
 export function buildProject(targetDir = '.') {
   const abs = resolve(targetDir);
@@ -15,49 +16,80 @@ export function buildProject(targetDir = '.') {
   const tsconfig = join(abs, 'tsconfig.json');
   if (existsSync(tsconfig)) {
     console.log('[yawn/build] Running tsc...');
-    const tsc = spawnSync(
-      process.execPath,
-      [join(abs, 'node_modules', '.bin', 'tsc'), '--project', tsconfig],
-      { stdio: 'inherit', cwd: abs },
-    );
+
+    // resolve tsc binary: local node_modules first, then global
+    const localTsc = join(abs, 'node_modules', '.bin', 'tsc');
+    const tscBin = existsSync(localTsc) ? localTsc : 'tsc';
+
+    const tsc = spawnSync(tscBin, ['--project', tsconfig], {
+      stdio: 'inherit',
+      cwd: abs,
+      shell: true,
+    });
+
     if (tsc.status !== 0) {
       return { exitCode: tsc.status ?? 1, output: 'TypeScript compilation failed.' };
     }
     return { exitCode: 0, output: `Built to ${outDir}` };
   }
 
-  // 2. Fallback: compile .yawn files to static HTML using the compiler
+  // 2. Fallback: compile .yawn files to static HTML
   const yawnFiles = collectYawnFiles(srcDir);
   if (yawnFiles.length === 0) {
-    return { exitCode: 1, output: 'No tsconfig.json and no .yawn files found. Nothing to build.' };
+    return {
+      exitCode: 1,
+      output: 'No tsconfig.json and no .yawn files found. Nothing to build.',
+    };
   }
 
   mkdirSync(outDir, { recursive: true });
 
-  // dynamic import of compiler (avoids circular dep at startup)
-  let compile: ((src: string, opts: Record<string, unknown>) => { toString(): string }) | undefined;
+  // Dynamically import the compiler via tsx-compatible dynamic import
+  let compileToHtml: ((src: string, opts: Record<string, unknown>) => string) | null = null;
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const mod = require('../../compiler/src/compiler.js') as { compileToHtml: typeof compile };
-    compile = mod.compileToHtml;
-  } catch {
+    const __dirname = dirname(fileURLToPath(import.meta.url));
+    const compilerPath = join(__dirname, '..', '..', '..', 'compiler', 'src', 'compiler.js');
+    // Use spawnSync to run a tiny Node script that does the compilation
+    // This avoids ESM/CJS interop issues at CLI build time
+    for (const file of yawnFiles) {
+      const source = readFileSync(file, 'utf8');
+      const rel = relative(srcDir, file);
+      const outFile = join(outDir, rel.replace(/\.yawn$/, '.html'));
+      mkdirSync(dirname(outFile), { recursive: true });
+
+      const script = [
+        `import { compileToHtml } from '${compilerPath.replace(/\\/g, '/')}';`,
+        `import { readFileSync, writeFileSync } from 'node:fs';`,
+        `const src = readFileSync(${JSON.stringify(file)}, 'utf8');`,
+        `const html = compileToHtml(src, { title: ${JSON.stringify(basename(file, '.yawn'))} });`,
+        `writeFileSync(${JSON.stringify(outFile)}, html, 'utf8');`,
+        `console.log('[yawn/build] ${rel} → ${relative(abs, outFile)}');`,
+      ].join('\n');
+
+      const tmpScript = join(outDir, '__yawn_build_tmp.mjs');
+      writeFileSync(tmpScript, script, 'utf8');
+
+      const res = spawnSync(
+        process.execPath,
+        ['--import', 'tsx', tmpScript],
+        { stdio: 'inherit', cwd: abs },
+      );
+
+      // clean up temp file
+      try { require('node:fs').unlinkSync(tmpScript); } catch { /* ignore */ }
+
+      if (res.status !== 0) {
+        return { exitCode: res.status ?? 1, output: `Failed to compile ${rel}` };
+      }
+    }
+
+    return { exitCode: 0, output: `Built ${yawnFiles.length} file(s) to ${outDir}` };
+  } catch (err) {
     return {
       exitCode: 1,
-      output: 'Compiler not available. Run `npm install` in the workspace first.',
+      output: `Build error: ${err instanceof Error ? err.message : String(err)}`,
     };
   }
-
-  for (const file of yawnFiles) {
-    const source = readFileSync(file, 'utf8');
-    const rel = relative(srcDir, file);
-    const outFile = join(outDir, rel.replace(/\.yawn$/, '.html'));
-    mkdirSync(join(outDir, relative(srcDir, join(file, '..'))), { recursive: true });
-    const html = compile!(source, { title: basename(file, '.yawn') });
-    writeFileSync(outFile, String(html), 'utf8');
-    console.log(`[yawn/build] ${rel} → ${relative(abs, outFile)}`);
-  }
-
-  return { exitCode: 0, output: `Built ${yawnFiles.length} file(s) to ${outDir}` };
 }
 
 function collectYawnFiles(dir: string): string[] {

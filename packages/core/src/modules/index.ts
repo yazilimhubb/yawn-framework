@@ -1,11 +1,15 @@
+export interface AppModuleContext {
+  modules: AppModule[];
+  use(module: AppModule): void;
+}
+
 export interface AppModule {
   name: string;
-  // called when module is registered
-  setup?: (app: { use: (module: AppModule) => void; context?: any }) => void;
-  // optional lifecycle hooks
-  onInit?: (appContext: any) => void;
+  setup?: (ctx: AppModuleContext) => void;
+  onInit?: (ctx: { modules: AppModule[] }) => void;
   onBeforeRender?: (html: string) => string | void;
   onMount?: () => void;
+  onUnmount?: () => void;
 }
 
 export function defineModule(module: AppModule): AppModule {

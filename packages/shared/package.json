@@ -1,5 +1,5 @@
 {
-  "name": "@yawn/shared",
+  "name": "@yawn-framework/shared",
   "version": "0.1.0",
   "description": "Shared types, constants and utilities for Yawn framework",
   "license": "MIT",

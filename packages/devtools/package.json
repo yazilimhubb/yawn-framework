@@ -1,5 +1,5 @@
 {
-  "name": "@yawn/devtools",
+  "name": "@yawn-framework/devtools",
   "version": "0.1.0",
   "description": "Dev-only inspection and debugging utilities for Yawn framework",
   "license": "MIT",
@@ -15,7 +15,7 @@
   },
   "keywords": ["yawn", "devtools", "debug"],
   "peerDependencies": {
-    "@yawn/reactivity": ">=0.1.0"
+    "@yawn-framework/reactivity": ">=0.1.0"
   },
   "repository": {
     "type": "git",

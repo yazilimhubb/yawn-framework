@@ -1,5 +1,3 @@
-// ─── AST Types ────────────────────────────────────────────────────────────────
-
 export interface ElementNode {
   type: 'element';
   tag: string;
@@ -15,8 +13,6 @@ export interface TextNode {
 
 export type ChildNode = ElementNode | TextNode;
 
-// ─── Tokeniser ────────────────────────────────────────────────────────────────
-
 type Token =
   | { kind: 'open'; tag: string; attrs: Record<string, string>; selfClosing: boolean }
   | { kind: 'close'; tag: string }
@@ -24,20 +20,16 @@ type Token =
 
 function parseAttrs(raw: string): Record<string, string> {
   const attrs: Record<string, string> = {};
-  // key="value" or key='value' or bare key (boolean attr)
   const re = /([a-zA-Z0-9_\-:.@#]+)(?:=(?:"([^"]*)"|'([^']*)'|([^\s/>]+)))?/g;
   let m: RegExpExecArray | null;
   while ((m = re.exec(raw)) !== null) {
-    const key = m[1];
-    const value = m[2] ?? m[3] ?? m[4] ?? '';
-    attrs[key] = value;
+    attrs[m[1]] = m[2] ?? m[3] ?? m[4] ?? '';
   }
   return attrs;
 }
 
 function tokenise(source: string): Token[] {
   const tokens: Token[] = [];
-  // matches tags or text between tags
   const re = /<(!--[\s\S]*?--|\/[a-zA-Z][^\s>]*|[a-zA-Z][^>]*)>|([^<]+)/g;
   let m: RegExpExecArray | null;
 
@@ -51,7 +43,7 @@ function tokenise(source: string): Token[] {
       continue;
     }
 
-    if (!tag || tag.startsWith('!--')) continue; // skip comments
+    if (!tag || tag.startsWith('!--')) continue;
 
     if (tag.startsWith('/')) {
       tokens.push({ kind: 'close', tag: tag.slice(1).trim() });
@@ -64,23 +56,14 @@ function tokenise(source: string): Token[] {
     const tagName = spaceIdx === -1 ? inner : inner.slice(0, spaceIdx);
     const attrRaw = spaceIdx === -1 ? '' : inner.slice(spaceIdx + 1);
 
-    tokens.push({
-      kind: 'open',
-      tag: tagName,
-      attrs: parseAttrs(attrRaw),
-      selfClosing,
-    });
+    tokens.push({ kind: 'open', tag: tagName, attrs: parseAttrs(attrRaw), selfClosing });
   }
 
   return tokens;
 }
 
-// ─── Parser ───────────────────────────────────────────────────────────────────
-
-/** Void elements that never have closing tags */
 const VOID_ELEMENTS = new Set([
-  'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
-  'link', 'meta', 'param', 'source', 'track', 'wbr',
+  'area','base','br','col','embed','hr','img','input','link','meta','param','source','track','wbr',
 ]);
 
 export function parse(source: string): ChildNode[] {
@@ -101,7 +84,6 @@ export function parse(source: string): ChildNode[] {
       continue;
     }
 
-    // open
     const node: ElementNode = {
       type: 'element',
       tag: token.tag,

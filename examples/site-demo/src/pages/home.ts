@@ -1,13 +1,11 @@
 import { defineComponent } from '../../../../packages/core/src/index.js';
-import { LandingHero } from '../components/LandingHero.ts';
+import { LandingHero } from '../components/LandingHero.js';
 
 export const HomePage = defineComponent({
   setup() {
-    return () => ({
+    return {
       tag: 'section',
-      children: [
-        LandingHero.setup(),
-      ],
-    });
+      children: [LandingHero.setup({})],
+    };
   },
 });

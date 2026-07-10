@@ -1,5 +1,5 @@
 {
-  "name": "@yawn/cli",
+  "name": "@yawn-framework/cli",
   "version": "0.1.0",
   "description": "CLI for scaffolding and running Yawn framework projects",
   "license": "MIT",

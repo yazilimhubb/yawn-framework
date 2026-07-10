@@ -1,8 +1,0 @@
-{
-  "name": "yh-app",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "yh dev"
-  }
-}

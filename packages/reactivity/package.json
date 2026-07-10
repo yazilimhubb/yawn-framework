@@ -1,5 +1,5 @@
 {
-  "name": "@yawn/reactivity",
+  "name": "@yawn-framework/reactivity",
   "version": "0.1.0",
   "description": "Signals, computed values, effects and watchers for Yawn framework",
   "license": "MIT",
