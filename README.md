@@ -8,7 +8,8 @@ HTML-tabanlı, TypeScript destekli modern web framework. `.yawn` single-file com
 ## Hızlı Başlangıç
 
 ```bash
-npx create-yawn@latest my-site
+npm install yawn-framework
+yh init
 cd my-site
 npm install
 yh dev
