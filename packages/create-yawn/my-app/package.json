@@ -1,0 +1,16 @@
+{
+  "name": "my-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "yh dev",
+    "build": "yh build"
+  },
+  "dependencies": {
+    "yawn-framework": "latest"
+  },
+  "devDependencies": {
+    "tsx": "latest",
+    "typescript": "latest"
+  }
+}
