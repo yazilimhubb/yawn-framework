@@ -1,4 +1,4 @@
-import type { ComponentDefinition, ComponentNode, ComponentRenderResult } from '../../core/src/index.js';
+import type { ComponentDefinition, ComponentNode, ComponentRenderResult } from '@yawn-framework/core';
 
 export interface Route {
   path: string;
@@ -99,7 +99,7 @@ export function createRouter(options: RouterOptions): RouterInstance {
     navigate,
     render() {
       const match = getMatch();
-      return match ? match.route.component.setup() : notFound.setup();
+      return match ? match.route.component.setup({}) : notFound.setup({});
     },
     onNavigate(listener) {
       listeners.add(listener);

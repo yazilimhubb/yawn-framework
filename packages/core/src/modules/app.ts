@@ -12,7 +12,7 @@ export function createAppContext(): AppContext {
     modules,
     use(module: AppModule) {
       modules.push(module);
-      module.setup?.({ use: (nextModule) => ctx.use(nextModule) });
+      module.setup?.({ modules, use: (nextModule) => ctx.use(nextModule) });
     },
   };
 

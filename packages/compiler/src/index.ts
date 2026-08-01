@@ -7,5 +7,5 @@ export type { ChildNode, ElementNode, TextNode } from './parser.js';
 export { transform } from './transform.js';
 export type { TransformOptions } from './transform.js';
 
-export { compileSFC, parseSFC, analyzeScript, scopeStyle } from './sfc.js';
+export { compileSFC, parseSFC, analyzeScript, scopeStyle, ssrRender, generateClientRuntime } from './sfc.js';
 export type { SFCBlock, CompiledSFC, SFCCompileOptions, ScriptAnalysis } from './sfc.js';

@@ -50,6 +50,14 @@ A `.yawn` file has three blocks:
 | `@input="expr"` | Input handler | `@input="name = event.target.value"` |
 | `@submit="expr"` | Submit handler | `@submit="handleSubmit()"` |
 | `:if="expr"` | Conditional render | `:if="count > 0"` |
+| `:else` | Else branch (sibling of `:if` element) | `<p :else>No items</p>` |
+| `:each="x in xs"` | Loop over array | `:each="item in items"` (supports `$index`) |
+| `:bind:attr="expr"` | Dynamic attribute | `:bind:src="imageUrl"` |
+| `:class="expr"` | Dynamic class binding | `:class="active ? 'text-green-400' : ''"` |
+| `:style="expr"` | Dynamic style binding | `:style="{ color: textColor }"` |
+| `:model="varName"` | Two-way input binding | `:model="name"` (shorthand for `@input`) |
+| `@submit="expr"` | Submit handler | `@submit="handleSubmit()"` |
+| `:if="expr"` | Conditional render | `:if="count > 0"` |
 | `:each="x in xs"` | Loop over array | `:each="item in items"` |
 
 ### Script Rules
@@ -161,34 +169,62 @@ Tailwind CSS CDN is automatically injected. Use Tailwind utility classes directl
 
 ## Server Setup (src/server.ts)
 
-Every Yawn project has a `src/server.ts` that wires up the dev server with page routing:
+Every Yawn project has a `src/server.ts` that wires up the dev server with automatic page routing and layout support:
 
 ```ts
-import { startDevServer } from '@yawn-framework/dev-server';
-import { compileSFC } from '@yawn-framework/compiler';
-import { readFileSync, existsSync } from 'node:fs';
-import { join, dirname, basename } from 'node:path';
+import { startDevServer } from 'yawn-framework/dev-server';
+import { compileSFC } from 'yawn-framework/compiler';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
+import { join, dirname, basename, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const pagesDir = join(__dirname, 'pages');
+const pagesDir   = join(__dirname, 'pages');
+const layoutFile = join(__dirname, '_layout.yawn');
+const compsDir   = join(__dirname, 'components');
 
-const routes: Record<string, string> = {
-  '/':       join(pagesDir, 'index.yawn'),
-  '/about':  join(pagesDir, 'about.yawn'),
-  '/contact': join(pagesDir, 'contact.yawn'),
-};
+function resolveComponent(name: string): string | null {
+  const p = join(compsDir, name + '.yawn');
+  return existsSync(p) ? readFileSync(p, 'utf8') : null;
+}
+
+function renderPage(pagePath: string, title = 'Yawn App'): string {
+  const pageSource = readFileSync(pagePath, 'utf8');
+  const pageName   = basename(pagePath, '.yawn');
+
+  if (existsSync(layoutFile)) {
+    // Render page as fragment, inject into layout
+    const { html: fragment } = compileSFC(pageSource, pageName, { fullPage: false, tailwind: false });
+    const layoutSource = readFileSync(layoutFile, 'utf8');
+    const { html } = compileSFC(layoutSource, '_layout', { tailwind: true, title });
+    return html.replace(/\{\{\s*slot\s*\}\}/g, fragment);
+  }
+  const { html } = compileSFC(pageSource, pageName, { tailwind: true, title });
+  return html;
+}
+
+function buildRoutes() {
+  const routes: Record<string, { file: string; title: string }> = {};
+  if (!existsSync(pagesDir)) return routes;
+  for (const e of readdirSync(pagesDir, { withFileTypes: true })) {
+    if (!e.isFile() || extname(e.name) !== '.yawn' || e.name.startsWith('_')) continue;
+    const name = basename(e.name, '.yawn');
+    routes[name === 'index' ? '/' : '/' + name] = {
+      file: join(pagesDir, e.name),
+      title: name.charAt(0).toUpperCase() + name.slice(1) + ' — Yawn App',
+    };
+  }
+  return routes;
+}
 
 startDevServer({
   port: 3000,
   rootDir: join(__dirname, '..', 'public'),
   handler(pathname) {
-    const pagePath = routes[pathname];
-    if (!pagePath || !existsSync(pagePath)) return null;
-    const source = readFileSync(pagePath, 'utf8');
-    const name = basename(pagePath, '.yawn');
-    const { html } = compileSFC(source, name, { tailwind: true, title: 'My Site' });
-    return html;
+    const routes = buildRoutes();
+    const route = routes[pathname];
+    if (!route) return null;
+    return renderPage(route.file, route.title);
   },
 });
 ```
@@ -303,33 +339,93 @@ yawn-framework              — core (required)
 ```
 my-site/
 ├── src/
+│   ├── _layout.yawn         # Shared layout (nav + footer wraps all pages)
 │   ├── pages/
 │   │   ├── index.yawn       # Route: /
 │   │   ├── about.yawn       # Route: /about
 │   │   └── contact.yawn     # Route: /contact
 │   ├── components/
-│   │   ├── Nav.yawn
-│   │   ├── Hero.yawn
-│   │   └── Footer.yawn
+│   │   ├── Card.yawn
+│   │   └── Hero.yawn
 │   └── server.ts
-├── public/
-│   └── style.css
+├── public/                  # Static assets
 ├── tsconfig.json
 └── package.json
 ```
 
 ---
 
+## Layout System
+
+Every project scaffolded by `yh init` or `npx create-yawn` includes a `src/_layout.yawn` file.
+The layout wraps all pages automatically. Use `{{ slot }}` where page content should be injected.
+
+```html
+<!-- src/_layout.yawn -->
+<template>
+  <div class="min-h-screen flex flex-col">
+    <header>...</header>
+    <main class="flex-1">{{ slot }}</main>
+    <footer>...</footer>
+  </div>
+</template>
+
+<script>
+  let slot = "";
+  let siteName = "My Site";
+</script>
+```
+
+In `src/server.ts`, the layout is automatically applied:
+
+```ts
+if (existsSync(layoutFile)) {
+  const { html: fragment } = compileSFC(pageSource, pageName, { fullPage: false, tailwind: false });
+  const { html } = compileSFC(layoutSource, '_layout', { tailwind: true, title });
+  return html.replace(/\{\{\s*slot\s*\}\}/g, fragment);
+}
+```
+
+---
+
+## Page Meta Block
+
+Pages can declare their own `<title>` and `<meta>` tags using an optional `<meta>` block:
+
+```html
+<meta>
+title: Contact — My Site
+description: Get in touch with us
+og:title: Contact Page
+og:description: Reach out to our team
+</meta>
+
+<template>
+  <div>...</div>
+</template>
+```
+
+The `compileSFC` function reads this block and injects the appropriate `<meta>` tags in `<head>`.
+
+---
+
 ## CLI Reference
 
 ```bash
-yh init <dir>                        # Scaffold new project
-yh dev [dir]                         # Start dev server (hot reload)
-yh build [dir]                       # Production build (tsc)
+# Project setup
+yh init [dir]                        # Scaffold new project (with layout, pages, server)
+yh dev [dir]                         # Start dev server with hot reload + error overlay
+yh build [dir]                       # Build to static HTML + run tsc
+
+# Code generation
+yh create page <Name> [dir]          # Create .yawn page (auto-adds route)
 yh create component <Name> [dir]     # Create .yawn component
-yh create site landing [dir]         # Create landing site scaffold
-yh insert <file> <Name> [key=val]    # Insert component into .yawn file
+yh insert <file> <Name> [key=val]    # Insert component tag into .yawn file
 yh help                              # Show help
+
+# npx (no install required)
+npx create-yawn@latest [dir]         # Interactive project scaffolder
+npx create-yawn@latest my-site       # Scaffold directly to my-site/
 ```
 
 ---
@@ -342,9 +438,13 @@ When generating Yawn code, follow these rules:
 2. **Use Tailwind classes** — Tailwind CDN is auto-included, no CSS file needed unless custom styles are required
 3. **Keep `<script>` minimal** — only `let`/`const` declarations, no imports, no functions
 4. **Use `@event` for all event bindings** — `@click`, `@input`, `@change`, `@submit`
-5. **Use `:if` for conditionals** — `:if="expr"` on any HTML element
-6. **Use `:each` for loops** — `:each="item in items"` where `items` is a comma-separated string or JSON array
-7. **Use `{{ expr }}` for text** — works in attributes too: `class="{{ dynamicClass }}"`
-8. **File-based routing** — one `.yawn` file per route in `src/pages/`
-9. **Components go in `src/components/`** — referenced by PascalCase tag or `con:Name` in templates
-10. **Server in `src/server.ts`** — always uses `startDevServer` + `compileSFC`
+5. **Use `:if` / `:else` for conditionals** — `:if="expr"` and `:else` on sibling elements
+6. **Use `:each` for loops** — `:each="item in items"` supports `$index` and `:each="item, i in items"`
+7. **Use `:model` for two-way input binding** — `:model="name"` instead of `@input="name = event.target.value"`
+8. **Use `:bind:attr` for dynamic attributes** — `:bind:src="imageUrl"`, `:bind:disabled="loading"`
+9. **Use `:class` / `:style` for dynamic styles** — `:class="active ? 'bg-indigo-500' : ''"` or `:class="{ active: isActive }"`
+10. **File-based routing** — one `.yawn` file per route in `src/pages/` (files starting with `_` are skipped)
+11. **Layout in `src/_layout.yawn`** — use `{{ slot }}` for page content injection
+12. **Page meta in `<meta>` block** — `title:`, `description:`, `og:title:` etc.
+13. **Components go in `src/components/`** — referenced by PascalCase tag in templates
+14. **Server in `src/server.ts`** — always uses `startDevServer` + `compileSFC`

@@ -1,5 +1,5 @@
-import { compile } from '../../compiler/src/compiler.js';
-import type { TNode } from '../../compiler/src/compiler.js';
+import { compile } from '@yawn-framework/compiler';
+import type { TNode } from '@yawn-framework/compiler';
 
 export type YawnTemplateNode = TNode;
 

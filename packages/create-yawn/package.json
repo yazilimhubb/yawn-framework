@@ -1,0 +1,21 @@
+{
+  "name": "yawn-lang",
+  "version": "0.3.0",
+  "description": "Native C++ Yawn template compiler & runtime package wrapper",
+  "type": "module",
+  "bin": {
+    "yawn": "./bin/yawn-cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yazilimhubb/yawn-framework.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yazilimhubb/yawn-framework/issues"
+  },
+  "homepage": "https://github.com/yazilimhubb/yawn-framework#readme",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.7.0"
+  }
+}

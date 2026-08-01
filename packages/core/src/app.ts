@@ -19,7 +19,7 @@ export function createApp(rootComponent: ComponentDefinition, options: AppOption
 
   function runModuleSetup() {
     for (const module of modules) {
-      module.setup?.({ use: (m) => modules.push(m) });
+      module.setup?.({ modules, use: (m) => modules.push(m) });
       module.onInit?.({ modules });
     }
   }

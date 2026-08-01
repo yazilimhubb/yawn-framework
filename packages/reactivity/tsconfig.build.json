@@ -1,0 +1,60 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "paths": {
+      "@yawn-framework/core": [
+        "../core/dist/index.d.ts"
+      ],
+      "@yawn-framework/compiler": [
+        "../compiler/dist/index.d.ts"
+      ],
+      "@yawn-framework/reactivity": [
+        "../reactivity/dist/index.d.ts"
+      ],
+      "@yawn-framework/shared": [
+        "../shared/dist/index.d.ts"
+      ],
+      "@yawn-framework/router": [
+        "../router/dist/index.d.ts"
+      ],
+      "yawn-framework": [
+        "../core/dist/index.d.ts"
+      ],
+      "yawn-framework/compiler": [
+        "../compiler/dist/index.d.ts"
+      ],
+      "yawn-framework/reactivity": [
+        "../reactivity/dist/index.d.ts"
+      ],
+      "yawn-framework/dev-server": [
+        "../dev-server/dist/index.d.ts"
+      ],
+      "yawn-framework/server": [
+        "../server/dist/index.d.ts"
+      ],
+      "yawn-framework/router": [
+        "../router/dist/index.d.ts"
+      ],
+      "yawn-framework/shared": [
+        "../shared/dist/index.d.ts"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

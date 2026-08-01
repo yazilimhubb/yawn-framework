@@ -1,237 +1,337 @@
+<meta>
+title: Yawn Framework — Build sites fast
+description: HTML-tabanlı TypeScript web framework. .yawn single-file components, reactive state, SSR, Tailwind built-in.
+og:title: Yawn Framework
+</meta>
+
 <template>
-  <div class="min-h-screen bg-[#0a0a0f] text-white font-sans">
+<div class="bg-black text-white">
 
-    <!-- ── Nav ── -->
-    <header class="sticky top-0 z-50 bg-[#0a0a0f]/80 backdrop-blur-xl border-b border-white/5">
-      <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="/" class="flex items-center gap-2 font-black text-lg tracking-tight">
-          <span class="text-2xl">⚡</span>
-          <span>Yawn</span>
-          <span class="text-xs font-bold bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded-full ml-1">v0.1</span>
+  <!-- ── HERO ─────────────────────────────────────────────────────────────── -->
+  <section class="relative overflow-hidden min-h-screen flex flex-col items-center justify-center px-6 text-center">
+
+    <!-- grid lines -->
+    <div class="pointer-events-none absolute inset-0"
+         style="background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:60px 60px"></div>
+    <!-- center glow -->
+    <div class="pointer-events-none absolute inset-0 flex items-center justify-center">
+      <div class="w-[700px] h-[700px] rounded-full bg-indigo-600/10 blur-[120px]"></div>
+    </div>
+
+    <div class="relative max-w-5xl w-full pt-24 pb-20">
+      <!-- badge -->
+      <div class="inline-flex items-center gap-2 border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 text-xs font-bold px-4 py-1.5 rounded-full mb-10 uppercase tracking-[.15em]">
+        <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
+        v0.2.0 released
+      </div>
+
+      <!-- headline -->
+      <h1 class="text-[clamp(2.6rem,8vw,5.5rem)] font-black tracking-[-0.04em] leading-[1.02] mb-7">
+        Web sitesi yapmak<br/>
+        <span class="bg-gradient-to-r from-indigo-400 via-violet-400 to-purple-500 bg-clip-text text-transparent">
+          hiç bu kadar kolay
+        </span><br/>
+        olmamıştı.
+      </h1>
+
+      <!-- sub -->
+      <p class="text-lg md:text-xl text-white/40 max-w-2xl mx-auto leading-relaxed mb-12">
+        <span class="text-white/70 font-semibold">.yawn</span> SFC formatı — template, script ve style tek dosyada.
+        Tailwind dahil. Reactive state hazır. Sıfır config.
+      </p>
+
+      <!-- CTAs -->
+      <div class="flex flex-col sm:flex-row gap-3 justify-center items-center mb-14">
+        <a href="#start"
+           class="group w-full sm:w-auto bg-indigo-500 hover:bg-indigo-400 text-white font-bold px-8 py-3.5 rounded-full transition-all text-sm hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(99,102,241,.4)]">
+          Hemen başla
+          <span class="ml-1.5 group-hover:translate-x-1 inline-block transition-transform">→</span>
         </a>
-        <nav class="hidden md:flex items-center gap-8 text-sm text-white/50">
-          <a href="#features" class="hover:text-white transition-colors">Features</a>
-          <a href="#demo" class="hover:text-white transition-colors">Demo</a>
-          <a href="#start" class="hover:text-white transition-colors">Get Started</a>
-          <a href="https://github.com/yazilimhubb/yawn-framework"
-             class="flex items-center gap-1.5 bg-white/10 hover:bg-white/15 text-white px-4 py-1.5 rounded-full font-semibold transition-colors">
-            GitHub ↗
-          </a>
-        </nav>
-      </div>
-    </header>
-
-    <!-- ── Hero ── -->
-    <section class="relative overflow-hidden">
-      <!-- background glow -->
-      <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div class="w-[600px] h-[600px] bg-indigo-600/20 rounded-full blur-3xl"></div>
+        <a href="#demo"
+           class="w-full sm:w-auto border border-white/10 hover:border-white/20 text-white/60 hover:text-white font-semibold px-8 py-3.5 rounded-full transition-all text-sm hover:bg-white/[0.05]">
+          Canlı demo
+        </a>
       </div>
 
-      <div class="relative max-w-5xl mx-auto px-6 pt-28 pb-24 text-center">
-        <div class="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold px-4 py-1.5 rounded-full mb-8 uppercase tracking-widest">
-          🚀 &nbsp;Yeni — HTML tabanlı modern framework
-        </div>
-
-        <h1 class="text-5xl sm:text-7xl font-black tracking-tighter leading-[1.05] mb-6">
-          Web sitesi yapmak<br/>
-          <span class="bg-gradient-to-r from-indigo-400 via-violet-400 to-purple-400 bg-clip-text text-transparent">
-            hiç bu kadar kolay
-          </span><br/>
-          olmamıştı.
-        </h1>
-
-        <p class="text-xl text-white/50 max-w-2xl mx-auto leading-relaxed mb-10">
-          <strong class="text-white/80">.yawn</strong> single-file componentleri ile template, script ve style
-          tek dosyada. Tailwind dahil. Reactive state hazır. Sıfır config.
-        </p>
-
-        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <a href="#start"
-             class="group w-full sm:w-auto bg-indigo-500 hover:bg-indigo-400 text-white font-bold px-8 py-4 rounded-2xl transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(99,102,241,0.4)] text-base">
-            Hemen başla
-            <span class="ml-2 group-hover:translate-x-1 transition-transform inline-block">→</span>
-          </a>
-          <a href="#demo"
-             class="w-full sm:w-auto bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold px-8 py-4 rounded-2xl transition-all text-base">
-            Canlı demo gör
-          </a>
-        </div>
-
-        <!-- install command -->
-        <div class="mt-12 inline-flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl px-6 py-3 font-mono text-sm text-white/70">
-          <span class="text-indigo-400">$</span>
-          <span>npx create-yawn@latest my-site</span>
-          <button @click="copied = true" class="ml-2 text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded-lg transition font-sans">
-            {{ copied ? '✓ Copied' : 'Copy' }}
-          </button>
-        </div>
+      <!-- install -->
+      <div class="inline-flex items-center gap-3 bg-white/[0.04] border border-white/[0.08] rounded-2xl px-5 py-3 font-mono text-sm">
+        <span class="text-indigo-400">$</span>
+        <span class="text-white/70">npx create-yawn@latest my-site</span>
+        <button @click="copied = !copied"
+                class="text-xs bg-white/10 hover:bg-white/20 text-white/50 hover:text-white px-2.5 py-1 rounded-lg transition font-sans shrink-0">
+          {{ copied ? "✓ Copied" : "Copy" }}
+        </button>
       </div>
-    </section>
+    </div>
 
-    <!-- ── Features ── -->
-    <section id="features" class="max-w-6xl mx-auto px-6 py-24">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-black tracking-tight mb-4">Her şey dahil.</h2>
-        <p class="text-white/40 text-lg max-w-xl mx-auto">Ayrı paket kurmaya gerek yok. Tailwind'den router'a her şey hazır.</p>
-      </div>
+    <!-- scroll hint -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/20">
+      <span class="text-[10px] uppercase tracking-widest font-bold">Scroll</span>
+      <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+      </svg>
+    </div>
+  </section>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-
-        <div class="group bg-gradient-to-b from-white/5 to-white/[0.02] border border-white/10 rounded-2xl p-6 hover:border-indigo-500/30 hover:bg-indigo-500/5 transition-all">
-          <div class="text-3xl mb-4">📄</div>
-          <h3 class="font-bold text-lg mb-2">.yawn Componentler</h3>
-          <p class="text-white/40 text-sm leading-relaxed">
-            Vue'dan ilham alan single-file format. Template + Script + Style tek dosyada.
-          </p>
-        </div>
-
-        <div class="group bg-gradient-to-b from-white/5 to-white/[0.02] border border-white/10 rounded-2xl p-6 hover:border-violet-500/30 hover:bg-violet-500/5 transition-all">
-          <div class="text-3xl mb-4">⚡</div>
-          <h3 class="font-bold text-lg mb-2">Reactive State</h3>
-          <p class="text-white/40 text-sm leading-relaxed">
-            <code class="text-violet-400">{{ "{{ count }}" }}</code>, <code class="text-violet-400">@click</code>, <code class="text-violet-400">:if</code>, <code class="text-violet-400">:each</code> — JS bilmeden reaktif UI.
-          </p>
-        </div>
-
-        <div class="group bg-gradient-to-b from-white/5 to-white/[0.02] border border-white/10 rounded-2xl p-6 hover:border-cyan-500/30 hover:bg-cyan-500/5 transition-all">
-          <div class="text-3xl mb-4">🎨</div>
-          <h3 class="font-bold text-lg mb-2">Tailwind Built-in</h3>
-          <p class="text-white/40 text-sm leading-relaxed">
-            Tailwind CSS CDN otomatik eklenir. Utility class'ları direkt kullan, config yok.
-          </p>
-        </div>
-
-        <div class="group bg-gradient-to-b from-white/5 to-white/[0.02] border border-white/10 rounded-2xl p-6 hover:border-green-500/30 hover:bg-green-500/5 transition-all">
-          <div class="text-3xl mb-4">🔀</div>
-          <h3 class="font-bold text-lg mb-2">File-based Router</h3>
-          <p class="text-white/40 text-sm leading-relaxed">
-            <code class="text-green-400">src/pages/about.yawn</code> → <code class="text-green-400">/about</code>. Dosya = Route.
-          </p>
-        </div>
-
-        <div class="group bg-gradient-to-b from-white/5 to-white/[0.02] border border-white/10 rounded-2xl p-6 hover:border-orange-500/30 hover:bg-orange-500/5 transition-all">
-          <div class="text-3xl mb-4">🖥️</div>
-          <h3 class="font-bold text-lg mb-2">SSR + Hydration</h3>
-          <p class="text-white/40 text-sm leading-relaxed">
-            Server'da HTML render et, client'da hydrate et. SEO dostu, hızlı ilk yükleme.
-          </p>
-        </div>
-
-        <div class="group bg-gradient-to-b from-white/5 to-white/[0.02] border border-white/10 rounded-2xl p-6 hover:border-pink-500/30 hover:bg-pink-500/5 transition-all">
-          <div class="text-3xl mb-4">📦</div>
-          <h3 class="font-bold text-lg mb-2">10 Modül</h3>
-          <p class="text-white/40 text-sm leading-relaxed">
-            reactivity, router, compiler, server, dev-server, runtime, devtools... Hepsi hazır.
-          </p>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ── Live Demo ── -->
-    <section id="demo" class="max-w-4xl mx-auto px-6 py-16">
-      <div class="text-center mb-12">
-        <h2 class="text-4xl font-black tracking-tight mb-4">Canlı Demo</h2>
-        <p class="text-white/40">Sayacı çalıştır, Yawn'un reactive sistemini gör.</p>
-      </div>
-
-      <div class="bg-gradient-to-b from-white/5 to-transparent border border-white/10 rounded-3xl p-10 text-center">
-        <p class="text-white/30 text-xs font-bold uppercase tracking-widest mb-8">Reactive Counter</p>
-
-        <div class="text-8xl font-black tabular-nums mb-2
-          {{ count > 0 ? 'text-indigo-400' : count < 0 ? 'text-red-400' : 'text-white' }}">
-          {{ count }}
-        </div>
-
-        <p class="text-white/30 text-sm mb-8 h-5">
-          {{ count === 0 ? 'Butona bas!' : count > 0 ? count + ' kez arttırıldı' : 'Negatife gitti!' }}
-        </p>
-
-        <div class="flex gap-3 justify-center mb-6">
-          <button @click="count--"
-            class="w-14 h-14 bg-white/10 hover:bg-red-500/20 hover:text-red-400 rounded-2xl text-2xl font-bold transition-all hover:scale-110">
-            −
-          </button>
-          <button @click="count = 0"
-            class="px-6 h-14 bg-white/10 hover:bg-white/20 rounded-2xl text-sm font-bold transition-all">
-            Reset
-          </button>
-          <button @click="count++"
-            class="w-14 h-14 bg-indigo-500 hover:bg-indigo-400 rounded-2xl text-2xl font-bold transition-all hover:scale-110 hover:shadow-[0_0_20px_rgba(99,102,241,0.5)]">
-            +
-          </button>
-        </div>
-
-        <div :if="count >= 10"
-          class="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/20 text-green-400 text-sm font-semibold px-4 py-2 rounded-full">
-          🎉 10'u geçtin! Harika!
-        </div>
-        <div :if="count <= -5"
-          class="inline-flex items-center gap-2 bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-semibold px-4 py-2 rounded-full">
-          ⚠️ Çok negatif!
-        </div>
-      </div>
-    </section>
-
-    <!-- ── Get Started ── -->
-    <section id="start" class="max-w-3xl mx-auto px-6 py-24 text-center">
-      <h2 class="text-4xl font-black tracking-tight mb-4">30 saniyede başla.</h2>
-      <p class="text-white/40 text-lg mb-12">Node.js kurulu olması yeterli.</p>
-
-      <div class="space-y-3 text-left">
-        <div class="bg-[#0d0d14] border border-white/10 rounded-2xl px-6 py-4 font-mono text-sm">
-          <span class="text-white/30 mr-4 select-none">1</span>
-          <span class="text-indigo-400">npx</span>
-          <span class="text-white"> create-yawn@latest my-site</span>
-        </div>
-        <div class="bg-[#0d0d14] border border-white/10 rounded-2xl px-6 py-4 font-mono text-sm">
-          <span class="text-white/30 mr-4 select-none">2</span>
-          <span class="text-green-400">cd</span>
-          <span class="text-white"> my-site && npm install</span>
-        </div>
-        <div class="bg-[#0d0d14] border border-white/10 rounded-2xl px-6 py-4 font-mono text-sm">
-          <span class="text-white/30 mr-4 select-none">3</span>
-          <span class="text-violet-400">yh</span>
-          <span class="text-white"> dev</span>
-          <span class="text-white/30 ml-4"># → http://localhost:3000</span>
-        </div>
-      </div>
-
-      <div class="mt-10 p-6 bg-white/5 border border-white/10 rounded-2xl text-left">
-        <p class="text-white/30 text-xs font-bold uppercase tracking-widest mb-4">src/pages/index.yawn</p>
-        <pre class="font-mono text-sm text-white/70 overflow-x-auto leading-relaxed"><code><span class="text-white/30">&lt;template&gt;</span>
-  &lt;div&gt;
-    &lt;h1&gt;<span class="text-white">Merhaba {{ "{{ name }}" }}!</span>&lt;/h1&gt;
-    &lt;button <span class="text-indigo-400">@click</span>=<span class="text-green-400">"count++"</span>&gt;Tıkla ({{ "{{ count }}" }})&lt;/button&gt;
-    &lt;p <span class="text-violet-400">:if</span>=<span class="text-green-400">"count &gt; 3"</span>&gt;Harika!&lt;/p&gt;
-  &lt;/div&gt;
-<span class="text-white/30">&lt;/template&gt;</span>
-
-<span class="text-white/30">&lt;script&gt;</span>
-  <span class="text-indigo-400">let</span> <span class="text-white">name</span> = <span class="text-green-400">"Dünya"</span>;
-  <span class="text-indigo-400">let</span> <span class="text-white">count</span> = <span class="text-orange-400">0</span>;
-<span class="text-white/30">&lt;/script&gt;</span></code></pre>
-      </div>
-
-      <a href="#features"
-         class="mt-8 inline-flex items-center gap-2 bg-indigo-500 hover:bg-indigo-400 text-white font-bold px-8 py-4 rounded-2xl transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(99,102,241,0.4)]">
-        Özellikleri keşfet →
-      </a>
-    </section>
-
-    <!-- ── Footer ── -->
-    <footer class="border-t border-white/5 py-10">
-      <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-white/30 text-sm">
-        <span>© 2026 Yawn Framework — MIT License</span>
-        <div class="flex gap-6">
-          <a href="https://github.com/yazilimhubb/yawn-framework" class="hover:text-white transition">GitHub</a>
-          <a href="https://www.npmjs.com/package/yawn-framework" class="hover:text-white transition">npm</a>
-        </div>
-      </div>
-    </footer>
-
+  <!-- ── TRUST BAR ─────────────────────────────────────────────────────────── -->
+  <div class="border-y border-white/[0.06] bg-white/[0.01] py-6">
+    <div class="max-w-5xl mx-auto px-6 flex flex-wrap items-center justify-center gap-6 text-white/20 text-xs font-bold uppercase tracking-widest">
+      <span>TypeScript</span><span class="text-white/10">·</span>
+      <span>Tailwind CSS</span><span class="text-white/10">·</span>
+      <span>Node.js</span><span class="text-white/10">·</span>
+      <span>SSR + HMR</span><span class="text-white/10">·</span>
+      <span>ESM</span><span class="text-white/10">·</span>
+      <span>MIT License</span>
+    </div>
   </div>
+
+  <!-- ── FEATURES ──────────────────────────────────────────────────────────── -->
+  <section id="features" class="max-w-6xl mx-auto px-6 py-28">
+    <div class="text-center mb-20">
+      <p class="text-xs font-bold uppercase tracking-[.15em] text-indigo-400 mb-4">Her şey dahil</p>
+      <h2 class="text-4xl md:text-5xl font-black tracking-tight mb-5">Neden Yawn?</h2>
+      <p class="text-white/35 text-lg max-w-xl mx-auto">Ayrı paket yok. Config yok. Bundler yok. Kutunun içinden çıkıyor.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+      <!-- 1 -->
+      <div class="group bg-[#0c0c0c] border border-white/[0.07] rounded-2xl p-7 hover:border-indigo-500/30 hover:bg-[#0f0f18] transition-all duration-300">
+        <div class="w-11 h-11 rounded-xl bg-indigo-500/15 border border-indigo-500/20 flex items-center justify-center mb-5">
+          <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-base mb-2">Single File Components</h3>
+        <p class="text-white/35 text-sm leading-relaxed">
+          <code class="text-indigo-400 font-mono">.yawn</code> formatı — template + script + style tek dosyada. Vue'dan ilham, ama çok daha basit.
+        </p>
+      </div>
+
+      <!-- 2 -->
+      <div class="group bg-[#0c0c0c] border border-white/[0.07] rounded-2xl p-7 hover:border-violet-500/30 hover:bg-[#100f18] transition-all duration-300">
+        <div class="w-11 h-11 rounded-xl bg-violet-500/15 border border-violet-500/20 flex items-center justify-center mb-5">
+          <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-base mb-2">Reactive State</h3>
+        <p class="text-white/35 text-sm leading-relaxed">
+          <code class="text-violet-400 font-mono">{{ "{{ expr }}" }}</code> <code class="text-violet-400 font-mono">@click</code> <code class="text-violet-400 font-mono">:if</code> <code class="text-violet-400 font-mono">:each</code> — Proxy tabanlı reaktif UI, JS bilmeden.
+        </p>
+      </div>
+
+      <!-- 3 -->
+      <div class="group bg-[#0c0c0c] border border-white/[0.07] rounded-2xl p-7 hover:border-cyan-500/30 hover:bg-[#0a0f12] transition-all duration-300">
+        <div class="w-11 h-11 rounded-xl bg-cyan-500/15 border border-cyan-500/20 flex items-center justify-center mb-5">
+          <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-base mb-2">Tailwind Built-in</h3>
+        <p class="text-white/35 text-sm leading-relaxed">CDN otomatik eklenir. Config yok, kurulum yok. Tüm utility class'ları direkt kullan.</p>
+      </div>
+
+      <!-- 4 -->
+      <div class="group bg-[#0c0c0c] border border-white/[0.07] rounded-2xl p-7 hover:border-green-500/30 hover:bg-[#0a0f0a] transition-all duration-300">
+        <div class="w-11 h-11 rounded-xl bg-green-500/15 border border-green-500/20 flex items-center justify-center mb-5">
+          <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-base mb-2">File-based Router</h3>
+        <p class="text-white/35 text-sm leading-relaxed">
+          <code class="text-green-400 font-mono">src/pages/about.yawn</code> → <code class="text-green-400 font-mono">/about</code>. Dosya koy, route hazır.
+        </p>
+      </div>
+
+      <!-- 5 -->
+      <div class="group bg-[#0c0c0c] border border-white/[0.07] rounded-2xl p-7 hover:border-orange-500/30 hover:bg-[#100c08] transition-all duration-300">
+        <div class="w-11 h-11 rounded-xl bg-orange-500/15 border border-orange-500/20 flex items-center justify-center mb-5">
+          <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-base mb-2">SSR + Hot Reload</h3>
+        <p class="text-white/35 text-sm leading-relaxed">Server-side rendering + client hydration. Dev modda SSE tabanlı hot reload.</p>
+      </div>
+
+      <!-- 6 -->
+      <div class="group bg-[#0c0c0c] border border-white/[0.07] rounded-2xl p-7 hover:border-pink-500/30 hover:bg-[#100a0f] transition-all duration-300">
+        <div class="w-11 h-11 rounded-xl bg-pink-500/15 border border-pink-500/20 flex items-center justify-center mb-5">
+          <svg class="w-5 h-5 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-base mb-2">Layout Sistemi</h3>
+        <p class="text-white/35 text-sm leading-relaxed">
+          <code class="text-pink-400 font-mono">_layout.yawn</code> tüm sayfaları sarar. <code class="text-pink-400 font-mono">{{ "{{ slot }}" }}</code> ile içerik inject.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── LIVE DEMO ──────────────────────────────────────────────────────────── -->
+  <section id="demo" class="border-y border-white/[0.06] bg-[#050505] py-24">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <p class="text-xs font-bold uppercase tracking-[.15em] text-indigo-400 mb-4">Canlı demo</p>
+        <h2 class="text-4xl md:text-5xl font-black tracking-tight mb-4">Şimdi dene</h2>
+        <p class="text-white/35 text-base">Bu sayfa Yawn ile yapıldı. Counter reaktif, kod gerçek.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+
+        <!-- counter -->
+        <div class="bg-black border border-white/[0.08] rounded-2xl p-10 text-center">
+          <p class="text-white/20 text-[10px] font-bold uppercase tracking-widest mb-8">Reactive Counter</p>
+          <div class="text-[6.5rem] font-black tabular-nums leading-[1] mb-2
+            {{ count > 0 ? 'text-indigo-400' : count < 0 ? 'text-red-400' : 'text-white' }}">
+            {{ count }}
+          </div>
+          <p class="text-white/25 text-sm mb-8">
+            {{ count === 0 ? 'Bir butona bas' : count > 0 ? count + ' kez arttırıldı' : 'Negatife gitti' }}
+          </p>
+          <div class="flex items-center justify-center gap-3 mb-6">
+            <button @click="count--"
+              class="w-13 h-13 w-12 h-12 rounded-xl bg-white/[0.05] hover:bg-red-500/15 hover:text-red-400 border border-white/[0.07] text-xl font-bold transition-all hover:scale-110">−</button>
+            <button @click="count = 0"
+              class="px-5 h-12 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.07] text-sm font-bold transition-all">Reset</button>
+            <button @click="count++"
+              class="w-12 h-12 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-xl font-bold transition-all hover:scale-110 hover:shadow-[0_0_20px_rgba(99,102,241,.5)]">+</button>
+          </div>
+          <div :if="count >= 10"
+            class="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-bold px-3 py-1.5 rounded-full">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            10'u geçtin!
+          </div>
+          <div :if="count <= -5"
+            class="inline-flex items-center gap-2 bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold px-3 py-1.5 rounded-full">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+            Çok negatif!
+          </div>
+        </div>
+
+        <!-- code -->
+        <div class="bg-[#0a0a0a] border border-white/[0.08] rounded-2xl overflow-hidden">
+          <div class="flex items-center gap-2 px-5 py-3.5 border-b border-white/[0.06]">
+            <div class="w-2.5 h-2.5 rounded-full bg-red-500/40"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/40"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-green-500/40"></div>
+            <span class="ml-2 text-white/20 text-xs font-mono">index.yawn</span>
+          </div>
+          <pre class="p-6 text-sm font-mono leading-[1.8] overflow-x-auto text-white/50"><code><span class="text-white/20">&lt;template&gt;</span>
+  &lt;div&gt;
+    &lt;h1 :class=<span class="text-green-400">"count&gt;0?'text-indigo-400':'text-white'"</span>&gt;
+      <span class="text-violet-400">{{ "{{ count }}" }}</span>
+    &lt;/h1&gt;
+    &lt;button <span class="text-indigo-400">@click</span>=<span class="text-green-400">"count++"</span>&gt;+&lt;/button&gt;
+    &lt;button <span class="text-indigo-400">@click</span>=<span class="text-green-400">"count--"</span>&gt;−&lt;/button&gt;
+    &lt;p <span class="text-orange-400">:if</span>=<span class="text-green-400">"count&gt;=10"</span>&gt;Harika!&lt;/p&gt;
+    &lt;p <span class="text-orange-400">:else</span>&gt;Devam et&lt;/p&gt;
+  &lt;/div&gt;
+<span class="text-white/20">&lt;/template&gt;</span>
+
+<span class="text-white/20">&lt;script&gt;</span>
+  <span class="text-indigo-400">let</span> <span class="text-white/80">count</span> = <span class="text-orange-400">0</span>;
+<span class="text-white/20">&lt;/script&gt;</span></code></pre>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ───────────────────────────────────────────────────────── -->
+  <section class="max-w-4xl mx-auto px-6 py-28">
+    <div class="text-center mb-16">
+      <p class="text-xs font-bold uppercase tracking-[.15em] text-indigo-400 mb-4">Nasıl çalışır?</p>
+      <h2 class="text-4xl md:text-5xl font-black tracking-tight">3 adımda hazır</h2>
+    </div>
+
+    <div class="space-y-3">
+
+      <div class="flex items-start gap-5 bg-[#0c0c0c] border border-white/[0.07] rounded-2xl p-6 hover:border-indigo-500/20 transition-all">
+        <div class="shrink-0 w-10 h-10 rounded-xl bg-indigo-500/15 border border-indigo-500/25 text-indigo-400 font-black text-base flex items-center justify-center">1</div>
+        <div class="min-w-0">
+          <h3 class="font-bold text-sm mb-1.5">Proje oluştur</h3>
+          <p class="text-white/35 text-xs mb-3">npx ile scaffold. Layout, sayfalar, server — hepsi hazır gelir.</p>
+          <code class="block bg-black border border-white/[0.06] rounded-xl px-4 py-2.5 text-xs font-mono text-indigo-300">npx create-yawn@latest my-site</code>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-5 bg-[#0c0c0c] border border-white/[0.07] rounded-2xl p-6 hover:border-violet-500/20 transition-all">
+        <div class="shrink-0 w-10 h-10 rounded-xl bg-violet-500/15 border border-violet-500/25 text-violet-400 font-black text-base flex items-center justify-center">2</div>
+        <div class="min-w-0">
+          <h3 class="font-bold text-sm mb-1.5">.yawn dosyalarını düzenle</h3>
+          <p class="text-white/35 text-xs mb-3">HTML yaz, reactive state kullan, Tailwind class'ları ekle.</p>
+          <code class="block bg-black border border-white/[0.06] rounded-xl px-4 py-2.5 text-xs font-mono text-violet-300">src/pages/index.yawn</code>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-5 bg-[#0c0c0c] border border-white/[0.07] rounded-2xl p-6 hover:border-green-500/20 transition-all">
+        <div class="shrink-0 w-10 h-10 rounded-xl bg-green-500/15 border border-green-500/25 text-green-400 font-black text-base flex items-center justify-center">3</div>
+        <div class="min-w-0">
+          <h3 class="font-bold text-sm mb-1.5">Dev server başlat</h3>
+          <p class="text-white/35 text-xs mb-3">Hot reload, error overlay, auto-routing. Build ile static HTML.</p>
+          <code class="block bg-black border border-white/[0.06] rounded-xl px-4 py-2.5 text-xs font-mono text-green-300">yh dev&nbsp;&nbsp;&nbsp;&nbsp;# → http://localhost:3000</code>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── CTA ───────────────────────────────────────────────────────────────── -->
+  <section id="start" class="border-t border-white/[0.06] bg-[#050505] py-28">
+    <div class="max-w-2xl mx-auto px-6 text-center">
+
+      <div class="relative border border-indigo-500/20 rounded-3xl p-14 overflow-hidden bg-black">
+        <div class="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div class="w-[350px] h-[350px] rounded-full bg-indigo-600/15 blur-[80px]"></div>
+        </div>
+        <div class="relative">
+          <p class="text-xs font-bold uppercase tracking-[.15em] text-indigo-400 mb-4">Başla</p>
+          <h2 class="text-4xl font-black tracking-tight mb-4">30 saniyede hazır.</h2>
+          <p class="text-white/35 mb-10">Node.js yeterli. Başka bir şey gerekmez.</p>
+
+          <div class="space-y-2.5 text-left mb-10 font-mono text-sm">
+            <div class="flex items-center gap-4 bg-white/[0.03] border border-white/[0.06] rounded-xl px-5 py-3.5">
+              <span class="text-white/20 w-4 shrink-0">1</span>
+              <span class="text-indigo-400">npx</span>
+              <span class="text-white/60"> create-yawn@latest my-site</span>
+            </div>
+            <div class="flex items-center gap-4 bg-white/[0.03] border border-white/[0.06] rounded-xl px-5 py-3.5">
+              <span class="text-white/20 w-4 shrink-0">2</span>
+              <span class="text-green-400">cd</span>
+              <span class="text-white/60"> my-site &amp;&amp; npm install</span>
+            </div>
+            <div class="flex items-center gap-4 bg-white/[0.03] border border-white/[0.06] rounded-xl px-5 py-3.5">
+              <span class="text-white/20 w-4 shrink-0">3</span>
+              <span class="text-violet-400">yh</span>
+              <span class="text-white/60"> dev</span>
+              <span class="text-white/20 ml-auto text-xs">localhost:3000 →</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <a href="https://github.com/yazilimhubb/yawn-framework"
+               class="inline-flex items-center justify-center gap-2 bg-white text-black font-bold px-7 py-3.5 rounded-full hover:bg-white/90 transition-all text-sm hover:scale-[1.02]">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+              GitHub
+            </a>
+            <a href="/docs"
+               class="inline-flex items-center justify-center gap-2 border border-white/10 hover:border-white/20 text-white/60 hover:text-white font-bold px-7 py-3.5 rounded-full transition-all text-sm hover:bg-white/[0.05]">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+              Docs
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
 </template>
 
 <script>

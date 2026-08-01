@@ -1,4 +1,4 @@
-import type { Signal } from '../../reactivity/src/signal.js';
+import type { Signal } from '@yawn-framework/reactivity';
 
 // ─── Dev-only utilities ───────────────────────────────────────────────────────
 

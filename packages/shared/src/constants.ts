@@ -1,4 +1,4 @@
-export const YAWN_VERSION = '0.1.0';
+export const YAWN_VERSION = '0.2.0';
 
 /** Attribute used by the runtime to mark hydration roots. */
 export const HYDRATION_ATTR = 'data-yawn-root';

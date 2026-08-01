@@ -1,0 +1,50 @@
+name: Release Yawn Compiler
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Build & Release Yawn Binary
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            artifact_name: yawn
+            asset_name: yawn-linux-amd64
+          - os: windows-latest
+            artifact_name: yawn.exe
+            asset_name: yawn-windows-amd64.exe
+          - os: macos-latest
+            artifact_name: yawn
+            asset_name: yawn-macos-amd64
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Configure CMake
+        run: cmake -S yawnc -B yawnc/build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build Project
+        run: cmake --build yawnc/build --config Release
+
+      - name: Rename Build Artifacts
+        shell: bash
+        run: |
+          if [ "${{ matrix.os }}" = "windows-latest" ]; then
+            mv yawnc/build/Release/yawn.exe yawnc/build/${{ matrix.asset_name }}
+          else
+            mv yawnc/build/yawn yawnc/build/${{ matrix.asset_name }}
+          fi
+
+      - name: Upload Binary Package
+        uses: softprops/action-gh-release@v2
+        with:
+          files: yawnc/build/${{ matrix.asset_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

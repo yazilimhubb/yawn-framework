@@ -1,25 +1,11 @@
-import { HYDRATION_ATTR } from '../../shared/src/constants.js';
-import type { ComponentDefinition } from '../../core/src/component.js';
-import { renderToContainer } from '../../core/src/render.js';
+import type { ComponentDefinition } from '@yawn-framework/core';
 
 export interface MountOptions {
-  /**
-   * CSS selector or HTMLElement for the mount target.
-   * Defaults to the element with [data-yawn-root] attribute, then document.body.
-   */
   target?: string | HTMLElement;
 }
 
-/**
- * Mounts a component into the DOM.
- * Call this once in your browser entry point.
- *
- * @example
- * import { mount } from '@yh-framework/runtime';
- * import App from './App.js';
- *
- * mount(App);
- */
+const HYDRATION_ATTR = 'data-yawn-root';
+
 export function mount(root: ComponentDefinition, options: MountOptions = {}): void {
   if (typeof document === 'undefined') {
     throw new Error('[yawn/runtime] mount() can only be called in a browser environment.');
@@ -41,16 +27,10 @@ export function mount(root: ComponentDefinition, options: MountOptions = {}): vo
     throw new Error(`[yawn/runtime] Mount target not found: ${options.target}`);
   }
 
-  renderToContainer(root, container);
+  // Inline render to avoid cross-package relative import
+  container.innerHTML = (root.setup as (p: Record<string, unknown>) => unknown)(root.props ?? {}) as string;
 }
 
-/**
- * Hydrates server-rendered HTML.
- * Currently performs a client-side re-render into the target.
- * Future versions will diff against existing DOM.
- */
 export function hydrate(root: ComponentDefinition, options: MountOptions = {}): void {
-  // For now hydrate = mount (full re-render).
-  // TODO: incremental hydration with DOM diffing.
   mount(root, options);
 }

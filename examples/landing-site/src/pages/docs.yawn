@@ -1,0 +1,182 @@
+<meta>
+title: Docs — Yawn Framework
+description: Yawn Framework dokümantasyonu. .yawn SFC, direktifler, CLI, server.
+</meta>
+
+<template>
+<div class="bg-black">
+
+  <!-- Header -->
+  <div class="border-b border-white/[0.06] py-20">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="inline-flex items-center gap-2 border border-indigo-500/25 bg-indigo-500/10 text-indigo-400 text-[10px] font-bold px-3 py-1 rounded-full mb-6 uppercase tracking-widest">
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        Documentation
+      </div>
+      <h1 class="text-5xl font-black tracking-tight mb-4">Yawn Docs</h1>
+      <p class="text-white/40 text-lg max-w-xl">Framework'ü öğrenmek için ihtiyacın olan her şey.</p>
+    </div>
+  </div>
+
+  <!-- Quick nav -->
+  <div class="max-w-4xl mx-auto px-6 py-10">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+
+      <a href="#sfc" class="bg-[#0c0c0c] border border-white/[0.07] rounded-xl p-4 text-center hover:border-indigo-500/30 hover:bg-[#0f0f18] transition-all group">
+        <div class="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/20 flex items-center justify-center mx-auto mb-2.5">
+          <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        </div>
+        <div class="text-xs font-bold text-white/50 group-hover:text-white/80 transition">.yawn Format</div>
+      </a>
+
+      <a href="#directives" class="bg-[#0c0c0c] border border-white/[0.07] rounded-xl p-4 text-center hover:border-violet-500/30 hover:bg-[#100f18] transition-all group">
+        <div class="w-8 h-8 rounded-lg bg-violet-500/15 border border-violet-500/20 flex items-center justify-center mx-auto mb-2.5">
+          <svg class="w-4 h-4 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <div class="text-xs font-bold text-white/50 group-hover:text-white/80 transition">Direktifler</div>
+      </a>
+
+      <a href="#cli" class="bg-[#0c0c0c] border border-white/[0.07] rounded-xl p-4 text-center hover:border-green-500/30 hover:bg-[#0a0f0a] transition-all group">
+        <div class="w-8 h-8 rounded-lg bg-green-500/15 border border-green-500/20 flex items-center justify-center mx-auto mb-2.5">
+          <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        </div>
+        <div class="text-xs font-bold text-white/50 group-hover:text-white/80 transition">CLI</div>
+      </a>
+
+      <a href="#server" class="bg-[#0c0c0c] border border-white/[0.07] rounded-xl p-4 text-center hover:border-orange-500/30 hover:bg-[#100c08] transition-all group">
+        <div class="w-8 h-8 rounded-lg bg-orange-500/15 border border-orange-500/20 flex items-center justify-center mx-auto mb-2.5">
+          <svg class="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2"/></svg>
+        </div>
+        <div class="text-xs font-bold text-white/50 group-hover:text-white/80 transition">Server</div>
+      </a>
+
+    </div>
+  </div>
+
+
+  <!-- SFC Format -->
+  <div class="max-w-4xl mx-auto px-6 pb-16" id="sfc">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/20 flex items-center justify-center shrink-0">
+        <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+      </div>
+      <h2 class="text-2xl font-black">.yawn Single File Component</h2>
+    </div>
+    <p class="text-white/35 text-sm mb-6 leading-relaxed">Her .yawn dosyası en fazla 4 bloktan oluşur. Hepsi opsiyonel.</p>
+    <div class="bg-[#0a0a0a] border border-white/[0.08] rounded-2xl overflow-hidden">
+      <div class="flex items-center gap-2 px-5 py-3 border-b border-white/[0.06]">
+        <div class="w-2.5 h-2.5 rounded-full bg-red-500/40"></div>
+        <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/40"></div>
+        <div class="w-2.5 h-2.5 rounded-full bg-green-500/40"></div>
+        <span class="ml-2 text-white/20 text-xs font-mono">counter.yawn</span>
+      </div>
+      <pre class="p-6 text-sm font-mono leading-[1.85] overflow-x-auto text-white/50"><code><span class="text-white/20">&lt;meta&gt;</span>
+  <span class="text-white/35">title: My Page</span>
+  <span class="text-white/35">description: Page description</span>
+<span class="text-white/20">&lt;/meta&gt;</span>
+
+<span class="text-white/20">&lt;template&gt;</span>
+  &lt;div&gt;
+    &lt;h1&gt;<span class="text-violet-400">{{ "{{ title }}" }}</span>&lt;/h1&gt;
+    &lt;button <span class="text-indigo-400">@click</span>=<span class="text-green-400">"count++"</span>&gt;(<span class="text-violet-400">{{ "{{ count }}" }}</span>)&lt;/button&gt;
+    &lt;p <span class="text-orange-400">:if</span>=<span class="text-green-400">"count &gt; 3"</span>&gt;Harika!&lt;/p&gt;
+    &lt;p <span class="text-orange-400">:else</span>&gt;Devam et&lt;/p&gt;
+  &lt;/div&gt;
+<span class="text-white/20">&lt;/template&gt;</span>
+
+<span class="text-white/20">&lt;script&gt;</span>
+  <span class="text-indigo-400">let</span> <span class="text-white/80">title</span> = <span class="text-green-400">"Merhaba Yawn"</span>;
+  <span class="text-indigo-400">let</span> <span class="text-white/80">count</span> = <span class="text-orange-400">0</span>;
+<span class="text-white/20">&lt;/script&gt;</span>
+
+<span class="text-white/20">&lt;style&gt;</span>
+  <span class="text-white/35">h1 { font-size: 2rem; }</span>
+<span class="text-white/20">&lt;/style&gt;</span></code></pre>
+    </div>
+  </div>
+
+  <!-- Directives -->
+  <div class="max-w-4xl mx-auto px-6 pb-16" id="directives">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-8 h-8 rounded-lg bg-violet-500/15 border border-violet-500/20 flex items-center justify-center shrink-0">
+        <svg class="w-4 h-4 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      <h2 class="text-2xl font-black">Direktifler</h2>
+    </div>
+    <div class="bg-[#0a0a0a] border border-white/[0.08] rounded-2xl overflow-hidden">
+      <table class="w-full text-sm">
+        <thead><tr class="border-b border-white/[0.06]">
+          <th class="text-left px-5 py-3 text-white/30 font-semibold text-xs">Direktif</th>
+          <th class="text-left px-5 py-3 text-white/30 font-semibold text-xs">Açıklama</th>
+          <th class="text-left px-5 py-3 text-white/30 font-semibold text-xs hidden sm:table-cell">Örnek</th>
+        </tr></thead>
+        <tbody class="divide-y divide-white/[0.04]">
+          <tr><td class="px-5 py-3"><code class="text-violet-400 font-mono text-xs">{{ "{{ expr }}" }}</code></td><td class="px-5 py-3 text-white/40 text-xs">Reactive metin</td><td class="px-5 py-3 hidden sm:table-cell"><code class="text-white/25 font-mono text-xs">{{ "{{ count }}" }}</code></td></tr>
+          <tr><td class="px-5 py-3"><code class="text-indigo-400 font-mono text-xs">@click</code></td><td class="px-5 py-3 text-white/40 text-xs">Tıklama olayı</td><td class="px-5 py-3 hidden sm:table-cell"><code class="text-white/25 font-mono text-xs">@click="count++"</code></td></tr>
+          <tr><td class="px-5 py-3"><code class="text-indigo-400 font-mono text-xs">@input</code></td><td class="px-5 py-3 text-white/40 text-xs">Input olayı</td><td class="px-5 py-3 hidden sm:table-cell"><code class="text-white/25 font-mono text-xs">@input="name=event.target.value"</code></td></tr>
+          <tr><td class="px-5 py-3"><code class="text-orange-400 font-mono text-xs">:if</code></td><td class="px-5 py-3 text-white/40 text-xs">Koşullu render</td><td class="px-5 py-3 hidden sm:table-cell"><code class="text-white/25 font-mono text-xs">:if="count &gt; 0"</code></td></tr>
+          <tr><td class="px-5 py-3"><code class="text-orange-400 font-mono text-xs">:else</code></td><td class="px-5 py-3 text-white/40 text-xs">Else dalı</td><td class="px-5 py-3 hidden sm:table-cell"><code class="text-white/25 font-mono text-xs">&lt;p :else&gt;Boş&lt;/p&gt;</code></td></tr>
+          <tr><td class="px-5 py-3"><code class="text-green-400 font-mono text-xs">:each</code></td><td class="px-5 py-3 text-white/40 text-xs">Döngü</td><td class="px-5 py-3 hidden sm:table-cell"><code class="text-white/25 font-mono text-xs">:each="item in items"</code></td></tr>
+          <tr><td class="px-5 py-3"><code class="text-cyan-400 font-mono text-xs">:model</code></td><td class="px-5 py-3 text-white/40 text-xs">İki yönlü bağlama</td><td class="px-5 py-3 hidden sm:table-cell"><code class="text-white/25 font-mono text-xs">:model="name"</code></td></tr>
+          <tr><td class="px-5 py-3"><code class="text-pink-400 font-mono text-xs">:class</code></td><td class="px-5 py-3 text-white/40 text-xs">Dinamik class</td><td class="px-5 py-3 hidden sm:table-cell"><code class="text-white/25 font-mono text-xs">:class="active?'bg-indigo-500':''"</code></td></tr>
+          <tr><td class="px-5 py-3"><code class="text-yellow-400 font-mono text-xs">:bind:attr</code></td><td class="px-5 py-3 text-white/40 text-xs">Dinamik attribute</td><td class="px-5 py-3 hidden sm:table-cell"><code class="text-white/25 font-mono text-xs">:bind:src="imageUrl"</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CLI -->
+  <div class="max-w-4xl mx-auto px-6 pb-16" id="cli">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-8 h-8 rounded-lg bg-green-500/15 border border-green-500/20 flex items-center justify-center shrink-0">
+        <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      </div>
+      <h2 class="text-2xl font-black">CLI Komutları</h2>
+    </div>
+    <div class="space-y-2">
+      <div class="flex items-start gap-4 bg-[#0c0c0c] border border-white/[0.07] rounded-xl px-5 py-3.5">
+        <code class="text-indigo-300 font-mono text-xs shrink-0 pt-0.5">yh init [dir]</code>
+        <span class="text-white/35 text-xs leading-relaxed">Yeni Yawn projesi oluştur — layout, pages, server.ts, tsconfig</span>
+      </div>
+      <div class="flex items-start gap-4 bg-[#0c0c0c] border border-white/[0.07] rounded-xl px-5 py-3.5">
+        <code class="text-green-300 font-mono text-xs shrink-0 pt-0.5">yh dev</code>
+        <span class="text-white/35 text-xs leading-relaxed">Dev server başlat — hot reload, error overlay, auto-routing</span>
+      </div>
+      <div class="flex items-start gap-4 bg-[#0c0c0c] border border-white/[0.07] rounded-xl px-5 py-3.5">
+        <code class="text-violet-300 font-mono text-xs shrink-0 pt-0.5">yh build</code>
+        <span class="text-white/35 text-xs leading-relaxed">Static HTML build — .yawn sayfaları dist/ klasörüne derlenir</span>
+      </div>
+      <div class="flex items-start gap-4 bg-[#0c0c0c] border border-white/[0.07] rounded-xl px-5 py-3.5">
+        <code class="text-orange-300 font-mono text-xs shrink-0 pt-0.5">yh create page &lt;Name&gt;</code>
+        <span class="text-white/35 text-xs leading-relaxed">Yeni sayfa oluştur — meta bloğu ve route otomatik</span>
+      </div>
+      <div class="flex items-start gap-4 bg-[#0c0c0c] border border-white/[0.07] rounded-xl px-5 py-3.5">
+        <code class="text-pink-300 font-mono text-xs shrink-0 pt-0.5">yh create component &lt;Name&gt;</code>
+        <span class="text-white/35 text-xs leading-relaxed">Yeni .yawn component oluştur</span>
+      </div>
+      <div class="flex items-start gap-4 bg-[#0c0c0c] border border-white/[0.07] rounded-xl px-5 py-3.5">
+        <code class="text-cyan-300 font-mono text-xs shrink-0 pt-0.5">npx create-yawn@latest</code>
+        <span class="text-white/35 text-xs leading-relaxed">Interaktif proje scaffolder — kurulum gerektirmez</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="max-w-4xl mx-auto px-6 pb-20">
+    <div class="border-t border-white/[0.06] pt-10 flex items-center justify-between flex-wrap gap-4">
+      <div>
+        <p class="font-bold text-white/70 text-sm mb-1">Hazır mısın?</p>
+        <p class="text-xs text-white/30">30 saniyede çalışan bir proje.</p>
+      </div>
+      <a href="/#start" class="inline-flex items-center gap-2 bg-indigo-500 hover:bg-indigo-400 text-white font-bold px-5 py-2.5 rounded-full transition text-sm">
+        Başla
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+</div>
+</template>
+
+<script>
+</script>

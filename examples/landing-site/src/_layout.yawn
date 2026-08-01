@@ -1,0 +1,83 @@
+<template>
+  <div class="min-h-screen flex flex-col bg-black text-white antialiased">
+
+    <!-- Nav -->
+    <header class="sticky top-0 z-50 border-b border-white/[0.06] bg-black/95 backdrop-blur-2xl">
+      <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+
+        <!-- Logo -->
+        <a href="/" class="flex items-center gap-2 font-black text-base tracking-tight select-none group">
+          <div class="w-7 h-7 rounded-lg bg-indigo-500 flex items-center justify-center shrink-0">
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+          </div>
+          <span class="text-white group-hover:text-white/80 transition">Yawn</span>
+          <span class="text-[9px] font-bold bg-indigo-500/15 text-indigo-400 border border-indigo-500/25 px-1.5 py-0.5 rounded-md tracking-widest uppercase">v0.2</span>
+        </a>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex items-center gap-0.5">
+          <a href="/" class="text-sm text-white/45 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/[0.05] transition-all">Home</a>
+          <a href="/#features" class="text-sm text-white/45 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/[0.05] transition-all">Features</a>
+          <a href="/#demo" class="text-sm text-white/45 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/[0.05] transition-all">Demo</a>
+          <a href="/docs" class="text-sm text-white/45 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/[0.05] transition-all">Docs</a>
+          <div class="w-px h-4 bg-white/[0.08] mx-2"></div>
+          <a href="https://github.com/yazilimhubb/yawn-framework" target="_blank"
+             class="flex items-center gap-1.5 text-sm font-semibold bg-white text-black px-4 py-1.5 rounded-full hover:bg-white/90 transition-all">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+            GitHub
+          </a>
+        </nav>
+
+        <!-- Mobile menu button -->
+        <button class="md:hidden w-9 h-9 flex items-center justify-center rounded-lg hover:bg-white/[0.06] transition text-white/50 hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+
+      </div>
+    </header>
+
+    <main class="flex-1">
+      {{ slot }}
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/[0.06] bg-[#050505] py-10">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-5">
+
+          <div class="flex items-center gap-2">
+            <div class="w-6 h-6 rounded-md bg-indigo-500 flex items-center justify-center">
+              <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+            </div>
+            <span class="text-white/50 font-bold text-sm">Yawn Framework</span>
+          </div>
+
+          <div class="flex items-center gap-5 text-xs text-white/25">
+            <a href="https://github.com/yazilimhubb/yawn-framework" class="hover:text-white/55 transition flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+              GitHub
+            </a>
+            <a href="https://www.npmjs.com/package/yawn-framework" class="hover:text-white/55 transition flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M0 0v24h24V0H0zm6.672 19.992H4.008V7.992h2.664v12zm6.66 0H10.67V7.992h2.664v8.664h1.33V7.992h1.336v12H13.33z"/></svg>
+              npm
+            </a>
+            <a href="/docs" class="hover:text-white/55 transition">Docs</a>
+          </div>
+
+          <p class="text-[11px] text-white/15">© 2026 — MIT License</p>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</template>
+
+<script>
+  let slot = "";
+</script>

@@ -3,7 +3,7 @@ import { signal, effect } from '../../../packages/reactivity/src/index.js';
 
 // ─── State ────────────────────────────────────────────────────────────────────
 const count = signal(0);
-const message = signal('Hello from Yawn ⚡');
+const message = signal('Hello from Yawn');
 
 // ─── Root component ───────────────────────────────────────────────────────────
 const App = defineComponent({

@@ -1,24 +1,44 @@
 {
   "name": "yawn-framework",
-  "version": "0.1.0",
+  "version": "0.2.2",
   "private": false,
   "description": "A TypeScript HTML-based web framework with .yawn templates",
   "license": "MIT",
   "author": "anythingQW (https://github.com/anythingQW)",
   "type": "module",
-  "bin": {
-    "yawn": "./bin/yh.js",
-    "yh": "./bin/yh.js"
-  },
   "exports": {
-    ".": "./packages/core/src/index.ts",
-    "./reactivity": "./packages/reactivity/src/index.ts",
-    "./router": "./packages/router/src/index.ts",
-    "./compiler": "./packages/compiler/src/index.ts",
-    "./server": "./packages/server/src/index.ts",
-    "./dev-server": "./packages/dev-server/src/index.ts",
-    "./runtime": "./packages/runtime/src/index.ts",
-    "./shared": "./packages/shared/src/index.ts"
+    ".": {
+      "import": "./packages/core/dist/index.js",
+      "types": "./packages/core/dist/index.d.ts"
+    },
+    "./compiler": {
+      "import": "./packages/compiler/dist/index.js",
+      "types": "./packages/compiler/dist/index.d.ts"
+    },
+    "./reactivity": {
+      "import": "./packages/reactivity/dist/index.js",
+      "types": "./packages/reactivity/dist/index.d.ts"
+    },
+    "./router": {
+      "import": "./packages/router/dist/index.js",
+      "types": "./packages/router/dist/index.d.ts"
+    },
+    "./server": {
+      "import": "./packages/server/dist/index.js",
+      "types": "./packages/server/dist/index.d.ts"
+    },
+    "./dev-server": {
+      "import": "./packages/dev-server/dist/index.js",
+      "types": "./packages/dev-server/dist/index.d.ts"
+    },
+    "./runtime": {
+      "import": "./packages/runtime/dist/index.js",
+      "types": "./packages/runtime/dist/index.d.ts"
+    },
+    "./shared": {
+      "import": "./packages/shared/dist/index.js",
+      "types": "./packages/shared/dist/index.d.ts"
+    }
   },
   "workspaces": [
     "packages/*"
@@ -33,11 +53,20 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/yazilimhubb/yawn-framework"
+    "url": "git+https://github.com/yazilimhubb/yawn-framework.git"
   },
   "scripts": {
-    "dev": "yh dev",
-    "build": "yh build",
+    "dev": "./yawnc/build/yawn dev",
+    "build": "./yawnc/build/yawn build",
+    "build:packages": "node scripts/build-packages.js",
+    "release": "node scripts/release.js",
+    "release:patch": "node scripts/release.js patch",
+    "release:minor": "node scripts/release.js minor",
+    "release:major": "node scripts/release.js major",
+    "release:dry": "node scripts/release.js patch --dry",
+    "release:build": "node scripts/release.js patch --build-only",
+    "publish:packages": "node scripts/publish.js",
+    "publish:dry": "node scripts/publish.js --dry-run",
     "lint": "biome check .",
     "format": "biome format --write ."
   },
@@ -48,6 +77,7 @@
     "typescript": "^5.8.3"
   },
   "files": [
+    "packages/*/dist",
     "packages/*/src",
     "bin",
     "README.md",
